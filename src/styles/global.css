@@ -3,4 +3,9 @@
 @import './base.css';
 @import './components/header.css';
 @import './components/hero.css';
+@import './components/page-header.css';
+@import './components/preview-section.css';
+@import './components/skills-section.css';
+@import './components/project-card.css';
+@import './components/contact-form.css';
 @import './components/footer.css';

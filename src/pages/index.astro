@@ -2,16 +2,18 @@
 import BaseLayout from '../layouts/base-layout.astro';
 import SiteHeader from '../components/site-header.astro';
 import HeroSection from '../components/hero-section.astro';
+import PreviewSection from '../components/preview-section.astro';
 import SiteFooter from '../components/site-footer.astro';
 ---
 
 <BaseLayout
   title="Emmanuel Monin — Développeur web"
-  description="Portfolio d'Emmanuel Monin, développeur web. Découvrez mes projets et mes articles."
+  description="Portfolio d'Emmanuel Monin, développeur web. Découvrez mes compétences, mes projets et comment me contacter."
 >
   <SiteHeader />
   <main>
     <HeroSection />
+    <PreviewSection />
   </main>
   <SiteFooter />
 </BaseLayout>
