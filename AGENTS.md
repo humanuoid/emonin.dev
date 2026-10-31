@@ -55,3 +55,25 @@ npx astro check    # type checking
 - Commits atomiques, messages courts à l'impératif en anglais (`add blog post on bdpm pipeline`).
 - Pas de dépendance ajoutée sans justification ; pas de package pour ce que trois lignes de CSS font.
 - En cas de doute sur un choix structurant (nouvelle section du site, changement de thème, SEO), demander plutôt que décider unilatéralement.
+
+## Memory Management
+
+Project docs, memory, specs, and plans live in `aidd_docs/`.
+
+Read only task-relevant context and linked memory files; complete required reads.
+
+<!-- aidd_project_memory:start -->
+- `aidd_docs/memory/architecture.md`
+- `aidd_docs/memory/codebase-map.md`
+- `aidd_docs/memory/coding-assertions.md`
+- `aidd_docs/memory/design.md`
+- `aidd_docs/memory/ecosystem.md`
+- `aidd_docs/memory/forms.md`
+- `aidd_docs/memory/navigation.md`
+- `aidd_docs/memory/project-brief.md`
+- `aidd_docs/memory/testing.md`
+- `aidd_docs/memory/vcs.md`
+<!-- aidd_project_memory:end -->
+
+- Load `aidd_docs/memory/external/*` only when asked.
+- Load `aidd_docs/memory/internal/*` when relevant.
