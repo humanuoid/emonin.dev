@@ -23,6 +23,7 @@ The terms a contributor must know to read the code.
 ## Key features
 
 - Static pages rendered from `src/pages/`
+- Design system documented in `aidd_docs/design-spec.md`: tokens (light/dark via `prefers-color-scheme`), centralized BEM CSS in `src/styles/`, inline SVG icons
 - Blog articles from Markdown via Content Collections
 - Syntax highlighting with Shiki (built into Astro)
 - Automatic deployment to GitHub Pages on push to `main` (planned, not wired yet)

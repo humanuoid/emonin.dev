@@ -14,13 +14,14 @@ The macro technical shape: the stack, how the pieces fit, and the decisions behi
 flowchart LR
     md["src/content/ Markdown"] --> cc["Content Collections"] --> pages["src/pages/ routes"] --> build["astro build"] --> dist["dist/ static site"] --> pagesdeploy["GitHub Pages (planned)"]
     components["src/components/"] --> pages
+    styles["src/styles/ centralized CSS"] --> layout["src/layouts/"] --> pages
     public["public/ static assets"] --> dist
 ```
 
 ## Key decisions
 
 - Static site, no backend: content is Markdown, so publishing is a commit, not a deploy pipeline.
-- Component-oriented design: each UI block is a standalone Astro component in `src/components/` with its scoped style; pages compose these blocks.
+- Component-oriented design: each UI block is a standalone Astro component in `src/components/` (markup only); all CSS is centralized in `src/styles/` with BEM naming, imported once via `global.css`. Visual contract: `aidd_docs/design-spec.md`.
 - No dependency without justification; no package for what three lines of CSS do.
 - `CNAME` (`emonin.dev`) at the root must never be deleted or moved.
 - No secret in the repo: everything pushed is public.
