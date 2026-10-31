@@ -34,6 +34,11 @@ src/styles/
   components/
     header.css          BEM block "header"
     hero.css            BEM blocks "hero" and "btn"
+    page-header.css     BEM block "page-header"
+    preview-section.css BEM block "preview"
+    skills-section.css  BEM block "skills"
+    project-card.css    BEM blocks "projects" and "project-card"
+    contact-form.css    BEM blocks "contact" and "contact-form"
     footer.css          BEM block "footer"
 ```
 
@@ -45,9 +50,14 @@ src/styles/
 
 | Component | File | BEM classes |
 | --------- | ---- | ----------- |
-| Site header | `site-header.astro` | `header`, `header__nav`, `header__brand`, `header__brand-dot`, `header__links`, `header__link` |
+| Site header | `site-header.astro` | `header`, `header__nav`, `header__brand`, `header__brand-dot`, `header__links`, `header__link`, `header__link--active` |
 | Hero | `hero-section.astro` | `hero`, `hero__eyebrow`, `hero__title`, `hero__subtitle`, `hero__actions` |
 | Buttons | in `hero.css` | `btn`, `btn--primary`, `btn--ghost` |
+| Page header | `page-header.astro` | `page-header`, `page-header__title`, `page-header__intro` |
+| Preview section | `preview-section.astro` | `preview`, `preview__title`, `preview__list`, `preview__item`, `preview__cta` |
+| Skills section | `skills-section.astro` | `skills`, `skills__title`, `skills__groups`, `skills__group`, `skills__group-title`, `skills__tags`, `skills__tag` |
+| Project card | `project-card.astro` | `projects`, `projects__title`, `projects__grid`, `project-card`, `project-card__title`, `project-card__description`, `project-card__tags`, `project-card__tag`, `project-card__links`, `project-card__link` |
+| Contact form | `contact-form.astro` | `contact`, `contact__success`, `contact__links`, `contact__link`, `contact-form`, `contact-form__honeypot`, `contact-form__field`, `contact-form__label`, `contact-form__input`, `contact-form__input--area`, `contact-form__submit` |
 | Site footer | `site-footer.astro` | `footer`, `footer__inner`, `footer__copyright`, `footer__credit`, `footer__socials`, `footer__social-link` |
 | Icon | `icon.astro` | inline SVG, no class |
 
@@ -70,7 +80,7 @@ Text links (everything except `.btn`, `.header__brand`, `.footer__social-link`) 
 Inline SVG through `src/components/icon.astro` (props: `name`, `size`), colored with `currentColor`. No icon library dependency.
 
 - Brand logos: filled, paths from Simple Icons (`github`, `linkedin`, `mistral`).
-- UI icons: stroked 1.5px round caps, paths from Lucide (`mail`, `arrow-up-right`).
+- UI icons: stroked 1.5px round caps, paths from Lucide (`mail`, `arrow-up-right`, `download`, `send`).
 
 ## Footer credit
 
