@@ -1,0 +1,48 @@
+/* Skills section — BEM block "skills" */
+.skills {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 1.5rem 3rem;
+}
+
+.skills__title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.25rem;
+}
+
+.skills__groups {
+  display: grid;
+  gap: 1.5rem;
+}
+
+@media (min-width: 40rem) {
+  .skills__groups {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.skills__group-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 0.625rem;
+}
+
+.skills__tags {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.skills__tag {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: 0.3rem 0.75rem;
+  font-size: 0.875rem;
+  color: var(--muted);
+}

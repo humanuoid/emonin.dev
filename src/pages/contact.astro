@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../layouts/base-layout.astro';
+import SiteHeader from '../components/site-header.astro';
+import PageHeader from '../components/page-header.astro';
+import ContactForm from '../components/contact-form.astro';
+import SiteFooter from '../components/site-footer.astro';
+import Icon from '../components/icon.astro';
+
+// Success flag set by the form service redirect (/contact?sent=1)
+const sent = Astro.url.searchParams.get('sent') === '1';
+
+const links = [
+  { href: 'https://github.com/humanuoid', label: 'GitHub', icon: 'github' as const },
+  {
+    href: 'https://www.linkedin.com/in/emmanuel-dev-lyon/',
+    label: 'LinkedIn',
+    icon: 'linkedin' as const,
+  },
+  { href: '/cv.pdf', label: 'Télécharger mon CV (PDF)', icon: 'download' as const },
+];
+---
+
+<BaseLayout
+  title="Contact — Emmanuel Monin"
+  description="Contacter Emmanuel Monin, développeur web : formulaire, réseaux et CV."
+>
+  <SiteHeader />
+  <main>
+    <PageHeader title="Contact" intro="Une question, un projet ? Écrivez-moi." />
+    <div class="contact">
+      {
+        sent && (
+          <p class="contact__success" role="status">
+            Merci ! Votre message a bien été envoyé, je vous répondrai rapidement.
+          </p>
+        )
+      }
+      <ContactForm />
+      <ul class="contact__links">
+        {
+          links.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                class="contact__link"
+                target={link.href.startsWith('http') ? '_blank' : undefined}
+                rel={link.href.startsWith('http') ? 'noopener me' : undefined}
+              >
+                <Icon name={link.icon} size={18} />
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </main>
+  <SiteFooter />
+</BaseLayout>

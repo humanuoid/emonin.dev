@@ -38,3 +38,12 @@
 .header__link:hover {
   color: var(--text);
 }
+
+.header__link--active {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.header__link--active:hover {
+  color: var(--accent-hover);
+}

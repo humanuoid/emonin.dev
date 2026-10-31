@@ -1,0 +1,35 @@
+---
+import Icon from './icon.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+}
+
+const { project } = Astro.props;
+const { title, description, tags, links } = project.data;
+---
+
+<article class="project-card">
+  <h3 class="project-card__title">{title}</h3>
+  <p class="project-card__description">{description}</p>
+  <ul class="project-card__tags">
+    {tags.map((tag) => <li class="project-card__tag">{tag}</li>)}
+  </ul>
+  <div class="project-card__links">
+    {
+      links.demo && (
+        <a href={links.demo} class="project-card__link" target="_blank" rel="noopener">
+          Démo <Icon name="arrow-up-right" size={16} />
+        </a>
+      )
+    }
+    {
+      links.code && (
+        <a href={links.code} class="project-card__link" target="_blank" rel="noopener">
+          Code <Icon name="arrow-up-right" size={16} />
+        </a>
+      )
+    }
+  </div>
+</article>
