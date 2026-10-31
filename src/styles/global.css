@@ -1,0 +1,6 @@
+/* Central stylesheet — imports tokens, base and one file per component (BEM) */
+@import './tokens.css';
+@import './base.css';
+@import './components/header.css';
+@import './components/hero.css';
+@import './components/footer.css';

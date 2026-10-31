@@ -1,16 +1,17 @@
 ---
+import BaseLayout from '../layouts/base-layout.astro';
+import SiteHeader from '../components/site-header.astro';
+import HeroSection from '../components/hero-section.astro';
+import SiteFooter from '../components/site-footer.astro';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout
+  title="Emmanuel Monin — Développeur web"
+  description="Portfolio d'Emmanuel Monin, développeur web. Découvrez mes projets et mes articles."
+>
+  <SiteHeader />
+  <main>
+    <HeroSection />
+  </main>
+  <SiteFooter />
+</BaseLayout>

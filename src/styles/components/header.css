@@ -1,0 +1,40 @@
+/* Site header — BEM block "header" */
+.header {
+  border-bottom: 1px solid var(--border);
+}
+
+.header__nav {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header__brand {
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+
+.header__brand-dot {
+  color: var(--accent);
+}
+
+.header__links {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+  padding: 0;
+  font-size: 0.925rem;
+}
+
+.header__link {
+  color: var(--muted);
+  transition: color 0.15s ease;
+}
+
+.header__link:hover {
+  color: var(--text);
+}

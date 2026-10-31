@@ -1,0 +1,31 @@
+/* Design tokens — light theme by default, dark via prefers-color-scheme */
+:root {
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+
+  --bg: #fcfcfc;
+  --surface: #ffffff;
+  --text: #1c1c1e;
+  --muted: #6b7280;
+  --border: #e8e8ea;
+
+  --accent: #fa520f; /* Mistral orange */
+  --accent-hover: #e04a0c;
+  --accent-contrast: #ffffff;
+
+  --radius: 0.5rem;
+  --max-width: 56rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0a0a0b;
+    --surface: #131315;
+    --text: #ededed;
+    --muted: #9ca3af;
+    --border: #26262a;
+
+    --accent: #ff8205;
+    --accent-hover: #ffa94d;
+    --accent-contrast: #3d0c00;
+  }
+}

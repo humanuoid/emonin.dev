@@ -4,8 +4,9 @@ The visual language: the design system, tokens, and UI conventions. What it look
 
 ## System
 
-- No design library: plain CSS in scoped Astro component styles.
-- Styling method: scoped `<style>` per component, design tokens as CSS custom properties.
+- No design library: plain CSS, centralized in `src/styles/` (tokens, base, one BEM file per component), imported once via `global.css`. Astro components hold markup only.
+- Naming: BEM (`block__element`, `block--modifier`).
+- Full visual contract: `aidd_docs/design-spec.md`.
 
 ## Tokens
 

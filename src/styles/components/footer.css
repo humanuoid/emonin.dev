@@ -1,0 +1,46 @@
+/* Site footer — BEM block "footer" */
+.footer {
+  border-top: 1px solid var(--border);
+  margin-top: 4rem;
+}
+
+.footer__inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.footer__copyright {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.footer__credit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  vertical-align: -2px;
+  margin-left: 0.25rem; /* keeps a space before the link even in minified HTML */
+}
+
+.footer__socials {
+  display: flex;
+  gap: 1rem;
+  list-style: none;
+  padding: 0;
+}
+
+.footer__social-link {
+  color: var(--muted);
+  display: inline-flex;
+  transition: color 0.15s ease;
+}
+
+.footer__social-link:hover {
+  color: var(--accent);
+}

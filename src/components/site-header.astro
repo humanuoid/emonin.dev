@@ -1,0 +1,23 @@
+---
+const links = [
+  { href: '/', label: 'Accueil' },
+  { href: '/projets', label: 'Projets' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/a-propos', label: 'À propos' },
+];
+---
+
+<header class="header">
+  <nav class="header__nav">
+    <a href="/" class="header__brand">emonin<span class="header__brand-dot">.</span>dev</a>
+    <ul class="header__links">
+      {
+        links.map((link) => (
+          <li>
+            <a href={link.href} class="header__link">{link.label}</a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</header>
