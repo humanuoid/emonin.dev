@@ -75,6 +75,7 @@ Agents: `aidd-dev-checker`, `aidd-dev-executor` (in `~/.config/opencode/agents/`
 ## Contribution style
 
 - Atomic commits, short imperative messages in English (`add blog post on bdpm pipeline`). Commits happen only when explicitly asked.
+- Pull request titles and descriptions in French — the only French part of the workflow; code, comments, commits and branches stay in English.
 - No dependency without justification; no package for what three lines of CSS can do.
 - When in doubt about a structuring choice (new site section, theme change, SEO), ask rather than decide unilaterally.
 

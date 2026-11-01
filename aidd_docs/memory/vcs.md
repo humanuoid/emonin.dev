@@ -20,6 +20,10 @@ The version-control conventions this project follows: branches, commits, and the
 - Format: `<type>: <description>`
 - Rules: atomic commits, short imperative messages in English (`add blog post on bdpm pipeline`)
 
+## Pull requests
+
+- Language: French — PR titles and descriptions are written in French. This is the only French surface of the workflow: code, comments, commit messages, and branch names stay in English.
+
 ## Commit Strategy
 
 AI should auto commit: `never` — commits happen only when explicitly asked.
