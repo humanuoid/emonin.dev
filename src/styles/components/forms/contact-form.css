@@ -6,6 +6,9 @@
 }
 
 .contact__success {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   border: 1px solid var(--border);
   border-left: 3px solid var(--accent);
   border-radius: var(--radius);
@@ -13,22 +16,54 @@
   padding: 0.75rem 1rem;
   margin-bottom: 1.5rem;
   font-size: 0.95rem;
+  animation: contact-rise 0.4s ease both;
 }
 
+.contact__success[hidden] {
+  display: none; /* the hidden attribute must win over display: flex */
+}
+
+.contact__success svg {
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+/* The links block sits ABOVE the form now */
+.contact__links-title {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+/* GitHub / LinkedIn / CV links are first-class actions: real ghost buttons */
 .contact__links {
   list-style: none;
   padding: 0;
-  margin-top: 2rem;
+  margin: 0 0 2.5rem;
   display: flex;
   flex-wrap: wrap;
-  gap: 1.25rem;
+  gap: 0.75rem;
 }
 
 .contact__link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-weight: 500;
+  font-weight: 600;
+}
+
+.contact__link svg {
+  color: var(--accent);
+}
+
+/* Entrance animation: the card children rise in, staggered */
+@keyframes contact-rise {
+  from {
+    opacity: 0;
+    transform: translateY(0.6rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .contact-form {
@@ -36,9 +71,59 @@
   flex-direction: column;
   gap: 1.25rem;
   border: 1px solid var(--border);
+  border-top: 3px solid var(--accent);
   border-radius: var(--radius);
   background: var(--surface);
   padding: 1.5rem;
+  animation: contact-rise 0.4s ease both;
+}
+
+.contact-form__hint,
+.contact-form__field,
+.contact-form__captcha,
+.contact-form__submit {
+  animation: contact-rise 0.45s ease both;
+}
+
+.contact-form__field:nth-of-type(1) {
+  animation-delay: 0.06s;
+}
+
+.contact-form__field:nth-of-type(2) {
+  animation-delay: 0.12s;
+}
+
+.contact-form__field:nth-of-type(3) {
+  animation-delay: 0.18s;
+}
+
+.contact-form__captcha {
+  animation-delay: 0.24s;
+}
+
+.contact-form__submit {
+  animation-delay: 0.3s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-form,
+  .contact-form__hint,
+  .contact-form__field,
+  .contact-form__captcha,
+  .contact-form__submit,
+  .contact__success {
+    animation: none;
+  }
+}
+
+.contact-form__hint {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.contact-form__required {
+  color: var(--error); /* red required marker */
+  font-weight: 700;
 }
 
 .contact-form__honeypot {
@@ -56,33 +141,72 @@
   font-size: 0.95rem;
 }
 
+/* Floating label: the label sits inside the input like a placeholder, and on
+   focus (or once filled, :not(:placeholder-shown)) it shrinks and docks on the
+   input's top border with a surface-colored notch. Pure CSS, no JS. */
 .contact-form__field {
-  display: flex;
-  flex-direction: column;
-  gap: 0.375rem;
+  position: relative;
 }
 
 .contact-form__label {
-  font-size: 0.9rem;
-  font-weight: 500;
+  position: absolute;
+  left: 0.875rem;
+  top: 0.7rem;
+  z-index: 1;
+  pointer-events: none;
+  font-size: 0.95rem;
+  color: var(--muted);
+  transition:
+    top 0.15s ease,
+    left 0.15s ease,
+    font-size 0.15s ease,
+    color 0.15s ease;
+}
+
+/* The textarea is taller: dock the label at its top edge instead of center */
+.contact-form__field--area .contact-form__label {
+  top: 0.7rem;
+}
+
+.contact-form__input:focus + .contact-form__label,
+.contact-form__input:not(:placeholder-shown) + .contact-form__label {
+  top: -0.55rem;
+  left: 0.6rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--surface); /* notch over the input border */
+  padding: 0 0.3rem;
 }
 
 .contact-form__input {
   font: inherit;
+  width: 100%;
   color: var(--text);
   background: var(--bg);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 0.625rem 0.875rem;
   transition:
-    border-color 0.15s ease,
-    box-shadow 0.15s ease;
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease;
+}
+
+.contact-form__input:hover {
+  border-color: var(--muted);
 }
 
 .contact-form__input:focus {
   outline: none;
   border-color: var(--accent);
+  background: var(--surface);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+.contact-form__captcha {
+  display: flex;
+  justify-content: flex-start;
 }
 
 .contact-form__input--area {
