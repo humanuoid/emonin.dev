@@ -57,7 +57,7 @@ const site = defineCollection({
         headline: z.string(),
         baseline: z.string(),
         location: z.string(),
-        brand: z.object({ name: z.string(), domain: z.string() }),
+        brand: z.object({ name: z.string(), role: z.string() }),
         credit: z.object({ text: z.string(), linkLabel: z.string(), href: z.string() }),
         nav: z.array(z.object({ href: z.string(), label: z.string() })),
         socials: z.array(
@@ -120,6 +120,8 @@ const site = defineCollection({
         icon: z.enum(titleIcons).optional(),
         title: z.string(),
         intro: z.string(),
+        // Floating page TOC: section ids + labels + icons, in display order
+        toc: z.array(z.object({ id: z.string(), label: z.string(), icon: z.enum(sectionIcons) })),
         titles: z.object({
           skills: z.string(),
           experience: z.string(),
@@ -151,12 +153,14 @@ const site = defineCollection({
         title: z.string(),
         intro: z.string(),
         successMessage: z.string(),
+        linksTitle: z.string().optional(),
         form: z.object({
           nameLabel: z.string(),
           emailLabel: z.string(),
           messageLabel: z.string(),
           submitLabel: z.string(),
           notice: z.string(),
+          requiredHint: z.string().optional(),
         }),
       })
       .strict(),

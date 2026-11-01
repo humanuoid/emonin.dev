@@ -1,6 +1,6 @@
 ---
 kind: education
-title: Expert en ingénierie et science des données
+title: Data Engineer
 organization: OpenClassrooms
 level: Titre RNCP niveau 7
 rncp: RNCP39775

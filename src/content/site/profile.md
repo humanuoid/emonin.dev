@@ -7,8 +7,8 @@ baseline: >-
   exigeants : conformité, performance, fiabilité.
 location: 25 min de Lyon Part-Dieu en TER
 brand:
-  name: emonin
-  domain: dev
+  name: Emmanuel Monin
+  role: Architecte-Développeur
 credit:
   text: Site conçu avec l'aide de
   linkLabel: Mistral AI
