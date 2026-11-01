@@ -7,18 +7,19 @@ type ExperienceEntry = CollectionEntry<'experience'>['data'];
 type SectionIcon = 'layers' | 'briefcase' | 'folder' | 'heart' | 'braces';
 
 interface Props {
+  id?: string;
   icon: SectionIcon;
   title: string;
   educationTitle: string;
   entries: ExperienceEntry[];
 }
 
-const { icon, title, educationTitle, entries } = Astro.props;
+const { id, icon, title, educationTitle, entries } = Astro.props;
 const jobs = entries.filter((entry) => entry.kind === 'job');
 const educations = entries.filter((entry) => entry.kind === 'education');
 ---
 
-<section class="experience" aria-labelledby="experience-title">
+<section id={id} class="experience" aria-labelledby="experience-title">
   <h2 id="experience-title" class="experience__title">
     <span class="experience__title-icon"><Icon name={icon} size={0.85} /></span>
     {title}

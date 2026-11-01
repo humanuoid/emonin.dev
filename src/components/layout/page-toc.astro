@@ -1,0 +1,70 @@
+---
+import Icon from '../ui/icon.astro';
+
+type SectionIcon = 'layers' | 'briefcase' | 'folder' | 'heart' | 'braces';
+
+interface TocItem {
+  id: string;
+  label: string;
+  icon: SectionIcon;
+}
+
+interface Props {
+  items: TocItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<!-- Floating page TOC — reusable on any page: pass the section ids/labels/icons.
+     Two modes: compact (icons only) by default, expanded on hover/focus (labels
+     appear, links take the full width of the nav block).
+     Mobile: bottom-centered pill. From 56rem up: vertical rail docked right. -->
+<nav class="page-toc" aria-label="Sommaire de la page">
+  <ul class="page-toc__list">
+    {
+      items.map((item) => (
+        <li class="page-toc__item">
+          <a class="page-toc__link" href={`#${item.id}`}>
+            <Icon name={item.icon} size={1.05} stroke={2.5} />
+            <span class="page-toc__label">{item.label}</span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+<script>
+  // Highlight the link of the section currently in the reading zone.
+  // Bottom of page = last section active (the reading zone never reaches it).
+  const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('.page-toc__link'));
+  if (links.length > 0) {
+    const byId = new Map(links.map((l) => [l.getAttribute('href')?.slice(1) ?? '', l]));
+    const activate = (id: string) => {
+      links.forEach((l) => l.classList.remove('page-toc__link--active'));
+      byId.get(id)?.classList.add('page-toc__link--active');
+    };
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) activate(entry.target.id);
+        }
+      },
+      { rootMargin: '-30% 0px -60% 0px' },
+    );
+    byId.forEach((_link, id) => {
+      const section = document.getElementById(id);
+      if (section) observer.observe(section);
+    });
+    const lastId = links[links.length - 1].getAttribute('href')?.slice(1) ?? '';
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) {
+          activate(lastId);
+        }
+      },
+      { passive: true },
+    );
+  }
+</script>

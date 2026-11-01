@@ -18,12 +18,13 @@ type SkillGroupIcon =
 type SkillGroup = CollectionEntry<'skills'>['data'];
 
 interface Props {
+  id?: string;
   icon: 'layers' | 'briefcase' | 'folder' | 'heart' | 'braces';
   title: string;
   groups: SkillGroup[];
 }
 
-const { icon, title, groups } = Astro.props;
+const { id, icon, title, groups } = Astro.props;
 const glossary = await getGlossary();
 
 // Split into 3 independent columns (contiguous chunks, so the reading order stays
@@ -71,7 +72,7 @@ function splitBalanced<T>(items: T[], k: number, weight: (t: T) => number): T[][
 const columns = splitBalanced(groups, columnCount, estimate);
 ---
 
-<section class="skills" aria-labelledby="skills-title">
+<section id={id} class="skills" aria-labelledby="skills-title">
   <h2 id="skills-title" class="skills__title">
     <span class="skills__title-icon"><Icon name={icon} size={0.85} /></span>
     {title}

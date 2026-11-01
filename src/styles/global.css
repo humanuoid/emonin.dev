@@ -9,6 +9,7 @@
 @import './components/ui/availability-badge.css';
 @import './components/layout/header.css';
 @import './components/layout/page-header.css';
+@import './components/layout/page-toc.css';
 @import './components/layout/footer.css';
 @import './components/sections/hero.css';
 @import './components/sections/preview-section.css';
