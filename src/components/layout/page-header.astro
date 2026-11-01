@@ -1,0 +1,23 @@
+---
+import Icon from '../ui/icon.astro';
+import { getGlossary, withTerms } from '../../lib/terms';
+
+type TitleIcon = 'user' | 'compass' | 'mail';
+
+interface Props {
+  icon?: TitleIcon;
+  title: string;
+  intro?: string;
+}
+
+const { icon, title, intro } = Astro.props;
+const glossary = await getGlossary();
+---
+
+<header class="page-header">
+  <h1 class="page-header__title">
+    {icon && <span class="page-header__title-icon"><Icon name={icon} size={0.75} /></span>}
+    {title}
+  </h1>
+  {intro && <p class="page-header__intro" set:html={withTerms(intro, glossary)} />}
+</header>

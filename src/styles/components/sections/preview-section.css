@@ -1,0 +1,75 @@
+/* Preview section — BEM block "preview" (home page "En bref" highlights) */
+/* No title on this section: it sits right under the hero */
+.preview {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 1.5rem 4rem;
+}
+
+.preview__title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.25rem;
+}
+
+.preview__grid {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 40rem) {
+  .preview__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.preview__highlight {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: 1.25rem;
+}
+
+.preview__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+}
+
+.preview__highlight-title {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.4rem;
+}
+
+.preview__highlight-text {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.preview__highlight-meta {
+  margin-top: 0.5rem;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--accent);
+}
+
+.preview__highlight-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+}

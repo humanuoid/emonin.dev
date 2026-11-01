@@ -1,0 +1,63 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Icon from '../ui/icon.astro';
+import { getGlossary, withTerms } from '../../lib/terms';
+
+interface Props {
+  entry: CollectionEntry<'experience'>['data'];
+}
+
+const { entry } = Astro.props;
+const glossary = await getGlossary();
+---
+
+<li class="experience-card">
+  <span class="experience-card__period">
+    {entry.period}
+    {entry.duration && <span class="experience-card__duration"> · {entry.duration}</span>}
+  </span>
+  <div class="experience-card__body">
+    {
+      entry.kind === 'job' ? (
+        <>
+          <h3 class="experience-card__role">{entry.role}</h3>
+          <p class="experience-card__meta">
+            {entry.company} ·
+            <span class="experience-card__location-icon"><Icon name="map-pin"  /></span>
+            {entry.location}
+          </p>
+          <p class="experience-card__summary" set:html={withTerms(entry.summary, glossary)} />
+          {entry.highlights && (
+            <ul class="experience-card__highlights">
+              {entry.highlights.map((highlight) => (
+                <li set:html={withTerms(highlight, glossary)} />
+              ))}
+            </ul>
+          )}
+        </>
+      ) : (
+        <>
+          <h3 class="experience-card__role">{entry.title}</h3>
+          {
+            entry.organization && (
+              <p class="experience-card__meta">
+                {entry.organization}
+                {entry.level && ` · ${entry.level}`}
+                {entry.rncp && ` · ${entry.rncp}`}
+              </p>
+            )
+          }
+          {entry.url && (
+            <p class="experience-card__link">
+              <a href={entry.url} target="_blank" rel="noopener">
+                {entry.urlLabel ?? entry.url}
+                <Icon name="arrow-up-right" />
+              </a>
+            </p>
+          )}
+          {entry.note && <p class="experience-card__summary" set:html={withTerms(entry.note, glossary)} />}
+        </>
+      )
+    }
+  </div>
+</li>

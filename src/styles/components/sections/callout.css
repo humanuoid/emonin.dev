@@ -1,0 +1,46 @@
+/* Callout — BEM block "callout": a highlighted note box (used on /parcours
+   after the skills section). Same container rhythm as the other sections. */
+.callout {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 1.5rem 3rem;
+}
+
+.callout__box {
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: 1.25rem 1.5rem;
+}
+
+.callout__title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: -0.01em;
+  margin-bottom: 0.5rem;
+}
+
+.callout__box--warning {
+  border-left-color: var(--warning);
+}
+
+.callout__box--warning .callout__title {
+  color: var(--warning);
+}
+
+.callout__text {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.callout__text + .callout__text {
+  margin-top: 0.75rem;
+}
+
+.callout__sources {
+  margin-top: 0.75rem;
+  font-size: 0.78rem;
+  color: var(--muted);
+}

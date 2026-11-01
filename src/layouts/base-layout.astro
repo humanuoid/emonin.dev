@@ -1,5 +1,7 @@
 ---
 import '../styles/global.css';
+import { getEntry } from 'astro:content';
+import AvailabilityBadge from '../components/ui/availability-badge.astro';
 
 interface Props {
   title: string;
@@ -7,6 +9,12 @@ interface Props {
 }
 
 const { title, description } = Astro.props;
+const profile = await getEntry('site', 'profile');
+
+// The floating availability badge shows on inner pages only — the home page
+// carries it inline in the hero instead
+const pathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const showFloatingBadge = pathname !== '/';
 ---
 
 <html lang="fr">
@@ -34,8 +42,13 @@ const { title, description } = Astro.props;
       } catch (e) {}
     </script>
   </head>
-  <body>
+  <body class={showFloatingBadge ? 'has-floating-badge' : undefined}>
     <slot />
+    {
+      profile && profile.data.kind === 'profile' && showFloatingBadge && (
+        <AvailabilityBadge availability={profile.data.availability} variant="floating" />
+      )
+    }
     <script is:inline>
       // Theme switch: flips the effective theme, persists the explicit choice, keeps aria-checked in sync.
       function effectiveTheme() {

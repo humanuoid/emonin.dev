@@ -1,0 +1,26 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Icon from '../ui/icon.astro';
+import ProjectCard from '../cards/project-card.astro';
+
+type SectionIcon = 'layers' | 'briefcase' | 'folder' | 'heart' | 'braces';
+
+interface Props {
+  icon: SectionIcon;
+  title: string;
+  linkLabels: { demo: string; code: string };
+  projects: Array<CollectionEntry<'projects'>['data']>;
+}
+
+const { icon, title, linkLabels, projects } = Astro.props;
+---
+
+<section class="projects" aria-labelledby="projects-title">
+  <h2 id="projects-title" class="projects__title">
+    <span class="projects__title-icon"><Icon name={icon} size={0.85} /></span>
+    {title}
+  </h2>
+  <div class="projects__grid">
+    {projects.map((project) => <ProjectCard project={project} linkLabels={linkLabels} />)}
+  </div>
+</section>

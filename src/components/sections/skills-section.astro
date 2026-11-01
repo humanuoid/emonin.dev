@@ -1,0 +1,110 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Icon from '../ui/icon.astro';
+import { getGlossary, withTerms, hintFor } from '../../lib/terms';
+
+type SkillGroupIcon =
+  | 'layers'
+  | 'database'
+  | 'zap'
+  | 'shield-check'
+  | 'users'
+  | 'code'
+  | 'monitor'
+  | 'flask-conical'
+  | 'sparkles'
+  | 'server';
+
+type SkillGroup = CollectionEntry<'skills'>['data'];
+
+interface Props {
+  icon: 'layers' | 'briefcase' | 'folder' | 'heart' | 'braces';
+  title: string;
+  groups: SkillGroup[];
+}
+
+const { icon, title, groups } = Astro.props;
+const glossary = await getGlossary();
+
+// Split into 3 independent columns (contiguous chunks, so the reading order stays
+// correct when the columns stack on mobile). The split is chosen to balance the
+// estimated height of each column (title + description + tags). Grid columns do
+// not fragment content, unlike CSS multicol — tooltips are never clipped.
+const columnCount = 3;
+const estimate = (g: SkillGroup) =>
+  g.title.length + g.description.length + g.items.reduce((n, item) => n + item.length, 0);
+
+// Exact DP: partition the ordered list into k contiguous chunks minimizing the max chunk weight
+function splitBalanced<T>(items: T[], k: number, weight: (t: T) => number): T[][] {
+  const n = items.length;
+  const prefix = [0];
+  for (const item of items) prefix.push(prefix[prefix.length - 1] + weight(item));
+  const sum = (a: number, b: number) => prefix[b] - prefix[a];
+  const dp: number[][] = Array.from({ length: k + 1 }, () => new Array(n + 1).fill(Infinity));
+  const cut: number[][] = Array.from({ length: k + 1 }, () => new Array(n + 1).fill(0));
+  dp[0][0] = 0;
+  for (let c = 1; c <= k; c++) {
+    for (let i = 1; i <= n; i++) {
+      for (let j = c - 1; j < i; j++) {
+        const candidate = Math.max(dp[c - 1][j], sum(j, i));
+        if (candidate < dp[c][i]) {
+          dp[c][i] = candidate;
+          cut[c][i] = j;
+        }
+      }
+    }
+  }
+  const bounds: number[] = [];
+  let i = n;
+  let c = k;
+  while (c > 0) {
+    bounds.push(cut[c][i]);
+    i = cut[c][i];
+    c--;
+  }
+  bounds.reverse();
+  return Array.from({ length: k }, (_, c) =>
+    items.slice(bounds[c], c + 1 < k ? bounds[c + 1] : n),
+  );
+}
+
+const columns = splitBalanced(groups, columnCount, estimate);
+---
+
+<section class="skills" aria-labelledby="skills-title">
+  <h2 id="skills-title" class="skills__title">
+    <span class="skills__title-icon"><Icon name={icon} size={0.85} /></span>
+    {title}
+  </h2>
+  <div class="skills__groups">
+    {
+      columns.map((column) => (
+        <div class="skills__column">
+          {column.map((group) => (
+            <div class="skills__group">
+              <h3 class="skills__group-title">
+                <span class="skills__group-icon">
+                  <Icon name={group.icon as SkillGroupIcon} />
+                </span>
+                {group.title}
+              </h3>
+              <p class="skills__group-description" set:html={withTerms(group.description, glossary)} />
+              <ul class="skills__tags">
+                {group.items.map((item) => {
+                  const hint = hintFor(item, glossary);
+                  return hint ? (
+                    <li class="skills__tag" tabindex="0" data-hint={hint}>
+                      {item}
+                    </li>
+                  ) : (
+                    <li class="skills__tag">{item}</li>
+                  );
+                })}
+              </ul>
+            </div>
+          ))}
+        </div>
+      ))
+    }
+  </div>
+</section>

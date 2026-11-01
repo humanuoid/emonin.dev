@@ -1,0 +1,35 @@
+---
+import Icon from '../ui/icon.astro';
+
+interface Props {
+  name: string;
+  credit: { text: string; linkLabel: string; href: string };
+  socials: Array<{ href: string; label: string; icon: 'github' | 'linkedin' }>;
+}
+
+const { name, credit, socials } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="footer__inner">
+    <p class="footer__copyright">
+      © {year} {name} · {credit.text}
+      <a href={credit.href} rel="noopener" class="footer__credit">
+        <Icon name="mistral" />
+        {credit.linkLabel}
+      </a>
+    </p>
+    <ul class="footer__socials">
+      {
+        socials.map((s) => (
+          <li>
+            <a href={s.href} rel="me" aria-label={s.label} title={s.label} class="footer__social-link icon-button">
+              <Icon name={s.icon} />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</footer>

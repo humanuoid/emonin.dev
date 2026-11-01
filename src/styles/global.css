@@ -1,14 +1,22 @@
-/* Central stylesheet — imports tokens, base and one file per component (BEM) */
+/* Central stylesheet — imports tokens, base and one file per component (BEM).
+   The components/ subfolders mirror src/components/ (layout, sections, cards, forms, ui). */
 @import './tokens.css';
 @import './base.css';
-@import './components/buttons.css';
-@import './components/icon-button.css';
-@import './components/header.css';
-@import './components/theme-toggle.css';
-@import './components/hero.css';
-@import './components/page-header.css';
-@import './components/preview-section.css';
-@import './components/skills-section.css';
-@import './components/project-card.css';
-@import './components/contact-form.css';
-@import './components/footer.css';
+@import './components/ui/buttons.css';
+@import './components/ui/icon-button.css';
+@import './components/ui/theme-toggle.css';
+@import './components/ui/tooltip.css';
+@import './components/ui/availability-badge.css';
+@import './components/layout/header.css';
+@import './components/layout/page-header.css';
+@import './components/layout/footer.css';
+@import './components/sections/hero.css';
+@import './components/sections/preview-section.css';
+@import './components/sections/skills-section.css';
+@import './components/sections/experience-section.css';
+@import './components/sections/projects-section.css';
+@import './components/sections/values-section.css';
+@import './components/sections/callout.css';
+@import './components/cards/project-card.css';
+@import './components/cards/experience-card.css';
+@import './components/forms/contact-form.css';

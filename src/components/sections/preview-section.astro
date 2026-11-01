@@ -1,0 +1,56 @@
+---
+import Icon from '../ui/icon.astro';
+import { getGlossary, withTerms } from '../../lib/terms';
+
+type HighlightIcon = 'layers' | 'database' | 'shield-check';
+type CtaIcon = 'download' | 'mail' | 'arrow-right' | 'file-text';
+
+interface Preview {
+  title?: string;
+  highlights: Array<{
+    icon: HighlightIcon;
+    title: string;
+    text: string;
+    meta?: string;
+    link?: { href: string; label: string };
+  }>;
+  cta: { href: string; label: string; icon: CtaIcon };
+}
+
+interface Props {
+  preview: Preview;
+}
+
+const { preview } = Astro.props;
+const glossary = await getGlossary();
+---
+
+<section class="preview" aria-label={preview.title ?? 'Points forts'}>
+  {preview.title && <h2 class="preview__title">{preview.title}</h2>}
+  <ul class="preview__grid">
+    {
+      preview.highlights.map((highlight) => (
+        <li class="preview__highlight">
+          <span class="preview__icon">
+            <Icon name={highlight.icon} size={1.25} />
+          </span>
+          <h3 class="preview__highlight-title">{highlight.title}</h3>
+          <p class="preview__highlight-text" set:html={withTerms(highlight.text, glossary)} />
+          {highlight.meta && <p class="preview__highlight-meta">{highlight.meta}</p>}
+          {
+            highlight.link && (
+              <a class="preview__highlight-link" href={highlight.link.href} target="_blank" rel="noopener">
+                {highlight.link.label}
+                <Icon name="arrow-up-right" />
+              </a>
+            )
+          }
+        </li>
+      ))
+    }
+  </ul>
+  <a href={preview.cta.href} class="btn btn--ghost preview__cta">
+    {preview.cta.label}
+    <Icon name={preview.cta.icon} />
+  </a>
+</section>

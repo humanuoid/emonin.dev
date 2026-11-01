@@ -1,0 +1,83 @@
+---
+import Icon from '../ui/icon.astro';
+
+interface FormLabels {
+  nameLabel: string;
+  emailLabel: string;
+  messageLabel: string;
+  submitLabel: string;
+  notice: string;
+}
+
+interface Props {
+  form: FormLabels;
+}
+
+const { form } = Astro.props;
+
+// Static-friendly contact form via Web3Forms (https://web3forms.com).
+// The access key NEVER lives in the repo or in this file: it is inlined at
+// build time from the environment only — local .env (git-ignored) in dev,
+// GitHub Actions secret PUBLIC_WEB3FORMS_ACCESS_KEY in prod.
+// When the variable is missing, no access_key field is rendered at all.
+const accessKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY as string | undefined;
+---
+
+{
+  accessKey ? (
+    <form class="contact-form" action="https://api.web3forms.com/submit" method="POST">
+      <input type="hidden" name="access_key" value={accessKey} />
+      <input type="hidden" name="redirect" value="/contact?sent=1" />
+      <!-- Honeypot anti-spam: invisible to humans, bots that fill it are rejected -->
+      <input
+        type="checkbox"
+        name="botcheck"
+        class="contact-form__honeypot"
+        tabindex="-1"
+        autocomplete="off"
+        aria-hidden="true"
+      />
+
+      <div class="contact-form__field">
+        <label class="contact-form__label" for="contact-name">{form.nameLabel}</label>
+        <input
+          class="contact-form__input"
+          type="text"
+          id="contact-name"
+          name="name"
+          required
+          autocomplete="name"
+        />
+      </div>
+
+      <div class="contact-form__field">
+        <label class="contact-form__label" for="contact-email">{form.emailLabel}</label>
+        <input
+          class="contact-form__input"
+          type="email"
+          id="contact-email"
+          name="email"
+          required
+          autocomplete="email"
+        />
+      </div>
+
+      <div class="contact-form__field">
+        <label class="contact-form__label" for="contact-message">{form.messageLabel}</label>
+        <textarea
+          class="contact-form__input contact-form__input--area"
+          id="contact-message"
+          name="message"
+          rows="6"
+          required></textarea>
+      </div>
+
+      <button class="btn btn--primary contact-form__submit" type="submit">
+        {form.submitLabel}
+        <Icon name="send" />
+      </button>
+    </form>
+  ) : (
+    <p class="contact-form__notice">{form.notice}</p>
+  )
+}

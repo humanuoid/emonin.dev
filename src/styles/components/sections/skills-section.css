@@ -1,0 +1,88 @@
+/* Skills section — BEM block "skills".
+   Three independent columns (grid of flex columns) so each column has its own
+   height and the horizontal alignment is broken. NOT CSS multicol: columns
+   fragment overflowing content, which clips absolutely-positioned tooltips. */
+.skills {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+}
+
+.skills__title {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.25rem;
+}
+
+.skills__title-icon {
+  display: inline-flex;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.skills__groups {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 40rem) {
+  .skills__groups {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.skills__column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  min-width: 0;
+}
+
+.skills__group {
+  min-width: 0;
+}
+
+.skills__group-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+
+.skills__group-icon {
+  display: inline-flex;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.skills__group-description {
+  font-size: 0.875rem;
+  color: var(--muted);
+  margin-bottom: 0.625rem;
+}
+
+.skills__tags {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.skills__tag {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  padding: 0.05rem 0.45rem;
+  font-size: 0.7rem;
+  color: var(--muted);
+  cursor: help;
+}

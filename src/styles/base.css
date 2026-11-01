@@ -47,3 +47,8 @@ img {
   max-width: 100%;
   display: block;
 }
+
+/* Full-width alternating band to visually separate sections on inner pages */
+.band {
+  background: color-mix(in srgb, var(--accent) 5%, var(--bg));
+}

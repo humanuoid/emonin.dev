@@ -13,6 +13,9 @@
   --accent-hover: #5559a3;
   --accent-contrast: #ffffff;
 
+  --warning: #d97706; /* amber, for warning accents (callout liseret, form notice) */
+  --warning-hover: #b45309;
+
   /* Mistral brand orange — kept for the footer credit only */
   --mistral: #fa520f;
   --mistral-hover: #e04a0c;
@@ -46,6 +49,9 @@
   --accent-hover: #c4b5fd;
   --accent-contrast: #2e1065;
 
+  --warning: #fbbf24;
+  --warning-hover: #fcd34d;
+
   --mistral: #ff8205;
   --mistral-hover: #ffa94d;
 
@@ -73,6 +79,9 @@
     --accent: #a78bfa;
     --accent-hover: #c4b5fd;
     --accent-contrast: #2e1065;
+
+    --warning: #fbbf24;
+    --warning-hover: #fcd34d;
 
     --mistral: #ff8205;
     --mistral-hover: #ffa94d;

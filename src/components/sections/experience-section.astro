@@ -1,0 +1,33 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Icon from '../ui/icon.astro';
+import ExperienceCard from '../cards/experience-card.astro';
+
+type ExperienceEntry = CollectionEntry<'experience'>['data'];
+type SectionIcon = 'layers' | 'briefcase' | 'folder' | 'heart' | 'braces';
+
+interface Props {
+  icon: SectionIcon;
+  title: string;
+  educationTitle: string;
+  entries: ExperienceEntry[];
+}
+
+const { icon, title, educationTitle, entries } = Astro.props;
+const jobs = entries.filter((entry) => entry.kind === 'job');
+const educations = entries.filter((entry) => entry.kind === 'education');
+---
+
+<section class="experience" aria-labelledby="experience-title">
+  <h2 id="experience-title" class="experience__title">
+    <span class="experience__title-icon"><Icon name={icon} size={0.85} /></span>
+    {title}
+  </h2>
+  <ol class="experience__list">
+    {jobs.map((entry) => <ExperienceCard entry={entry} />)}
+  </ol>
+  <h3 class="experience__subtitle">{educationTitle}</h3>
+  <ol class="experience__list">
+    {educations.map((entry) => <ExperienceCard entry={entry} />)}
+  </ol>
+</section>

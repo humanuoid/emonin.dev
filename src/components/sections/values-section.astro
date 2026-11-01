@@ -1,0 +1,54 @@
+---
+import Icon from '../ui/icon.astro';
+
+type SectionIcon = 'layers' | 'briefcase' | 'folder' | 'heart' | 'braces';
+
+type BadgeIcon =
+  | 'target'
+  | 'lightbulb'
+  | 'users'
+  | 'zap'
+  | 'footprints'
+  | 'mountain'
+  | 'trees'
+  | 'gamepad-2'
+  | 'utensils-crossed';
+
+interface LabeledItems {
+  label: string;
+  items: Array<{ label: string; icon: BadgeIcon }>;
+}
+
+interface Props {
+  icon: SectionIcon;
+  title: string;
+  values: LabeledItems;
+  hobbies: LabeledItems;
+}
+
+const { icon, title, values, hobbies } = Astro.props;
+---
+
+<section class="values" aria-labelledby="values-title">
+  <h2 id="values-title" class="values__title">
+    <span class="values__title-icon"><Icon name={icon} size={0.85} /></span>
+    {title}
+  </h2>
+  <div class="values__groups">
+    {
+      [values, hobbies].map((group) => (
+        <div class="values__group">
+          <h3 class="values__group-title">{group.label}</h3>
+          <ul class="values__tags">
+            {group.items.map((item) => (
+              <li class="values__tag">
+                <Icon name={item.icon} size={1.2} />
+                {item.label}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+  </div>
+</section>
