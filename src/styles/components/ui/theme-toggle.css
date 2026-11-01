@@ -1,11 +1,16 @@
 /* Theme switch — BEM block "theme-toggle", built on .icon-button (icon-button.css).
-   The knob slides with a smooth animation; an explicit [data-theme] wins over the system. */
+   Squared like the rest of the design: grayed track, accent knob slides over the
+   ACTIVE theme's icon. Both icons stay visible, centered in their half.
+   An explicit [data-theme] wins over the system. */
 .theme-toggle {
   position: relative;
-  width: 2.5rem;
-  height: 1.5rem;
+  width: 3.6rem; /* 5% larger */
+  height: 1.8rem; /* exactly 2:1 — each half (sun/moon side) is a perfect square */
   padding: 0;
   overflow: hidden;
+  border: none; /* no border so the 2:1 ratio stays exact and both halves square */
+  border-radius: var(--radius); /* square, like everything else */
+  background: color-mix(in srgb, var(--muted) 14%, var(--surface)); /* grayed inactive side */
   transition:
     background 0.2s ease,
     border-color 0.2s ease;
@@ -18,60 +23,60 @@
 .theme-toggle__knob {
   position: absolute;
   top: 50%;
-  left: 0.2rem;
+  /* knob centered exactly under the active icon (25% in light, 75% in dark);
+     1.4rem in a 1.8rem track = uniform 0.2rem inner margin on every side */
+  left: calc(25% - 0.7rem);
   transform: translateY(-50%);
-  width: 1.05rem;
-  height: 1.05rem;
-  border-radius: 999px;
-  background: var(--accent);
-  color: var(--accent-contrast);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: var(--radius); /* square knob */
+  /* same "active surface" as the active link of the page TOC (design consistency) */
+  background: var(--accent-hover);
   transition: left 0.2s ease;
 }
 
 .theme-toggle__icon {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%); /* icon centered in its half */
   display: inline-flex;
+  z-index: 1; /* icons sit above the knob */
+  color: var(--muted);
+  transition: color 0.2s ease;
 }
 
 .theme-toggle__icon--sun {
-  display: none;
+  left: 25%;
+  color: var(--accent-contrast); /* active in light theme (knob behind it) */
 }
 
-/* Dark state: knob slides right, track takes an accent tint, sun icon shows */
-:root[data-theme='dark'] .theme-toggle {
-  background: color-mix(in srgb, var(--accent) 30%, var(--surface));
-  border-color: var(--accent);
+.theme-toggle__icon--moon {
+  left: 75%;
 }
 
+/* Dark state: knob slides to the right half over the moon, moon becomes active */
 :root[data-theme='dark'] .theme-toggle__knob {
-  left: calc(100% - 1.25rem);
+  left: calc(75% - 0.7rem);
 }
 
 :root[data-theme='dark'] .theme-toggle__icon--sun {
-  display: inline-flex;
+  color: var(--muted);
 }
 
 :root[data-theme='dark'] .theme-toggle__icon--moon {
-  display: none;
+  color: var(--accent-contrast);
 }
 
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) .theme-toggle {
-    background: color-mix(in srgb, var(--accent) 30%, var(--surface));
-    border-color: var(--accent);
-  }
-
   :root:not([data-theme='light']) .theme-toggle__knob {
-    left: calc(100% - 1.25rem);
+    left: calc(75% - 0.7rem);
   }
 
   :root:not([data-theme='light']) .theme-toggle__icon--sun {
-    display: inline-flex;
+    color: var(--muted);
   }
 
   :root:not([data-theme='light']) .theme-toggle__icon--moon {
-    display: none;
+    color: var(--accent-contrast);
   }
 }
