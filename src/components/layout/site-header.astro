@@ -1,8 +1,9 @@
 ---
 import ThemeToggle from '../ui/theme-toggle.astro';
+import Icon from '../ui/icon.astro';
 
 interface Props {
-  brand: { name: string; domain: string };
+  brand: { name: string; role: string };
   nav: Array<{ href: string; label: string }>;
 }
 
@@ -13,11 +14,17 @@ const pathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
 ---
 
 <header class="header">
+  <span class="header__loader" aria-hidden="true"></span>
+  <span class="header__indicator" aria-hidden="true"></span>
   <nav class="header__nav" aria-label="Navigation principale">
-    <a href="/" class="header__brand">{brand.name}<span class="header__brand-dot">.</span>{brand.domain}</a>
+    <a href="/" class="header__brand">
+      <span class="header__brand-text">
+        <span class="header__brand-name">{brand.name}</span>
+        <span class="header__brand-role">{brand.role}</span>
+      </span>
+    </a>
     <div class="header__right">
-      <ul class="header__links">
-        <li class="header__pill-li" aria-hidden="true"><span class="header__pill"></span></li>
+      <ul class="header__links" id="header-nav">
         {
           nav.map((link) => {
             const active = pathname === link.href;
@@ -34,8 +41,21 @@ const pathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
             );
           })
         }
+        <!-- On mobile the theme switch lives inside the burger menu; on desktop
+             the same <li> renders inline at the end of the header row -->
+        <li class="header__theme-item"><ThemeToggle /></li>
       </ul>
-      <ThemeToggle />
+      <button
+        type="button"
+        class="header__menu-button icon-button"
+        data-nav-toggle
+        aria-expanded="false"
+        aria-controls="header-nav"
+        aria-label="Ouvrir le menu"
+      >
+        <span class="header__menu-icon header__menu-icon--close"><Icon name="menu" /></span>
+        <span class="header__menu-icon header__menu-icon--open"><Icon name="x" /></span>
+      </button>
     </div>
   </nav>
 </header>
