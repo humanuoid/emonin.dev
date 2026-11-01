@@ -12,9 +12,13 @@ const { availability, variant = 'floating' } = Astro.props;
 ---
 
 <!-- Availability badge: floating (fixed bottom-right, non-home pages) or inline
-     (in the hero). Collapsed to a dot alone on small screens when floating. -->
+     (in the hero). Collapsed to a dot alone on small screens when floating —
+     but focusable, so a tap on the dot expands it to reveal the status. -->
 <div
   class={`availability-badge availability-badge--${availability.status} availability-badge--${variant}`}
+  tabindex="0"
+  aria-label={`${availability.label}${availability.period ? `, ${availability.period}` : ''}`}
+  title={`${availability.label}${availability.period ? ` — ${availability.period}` : ''}`}
 >
   <span class="availability-badge__dot" aria-hidden="true"></span>
   <span class="availability-badge__text">
