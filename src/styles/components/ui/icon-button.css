@@ -1,5 +1,5 @@
 /* Icon button — BEM block "icon-button".
-   Shared circular look for icon-only actions (footer social links, and the
+   Shared squared look for icon-only actions (footer social links, and the
    base of the header theme switch, which reshapes it in theme-toggle.css). */
 .icon-button {
   display: inline-flex;
@@ -7,7 +7,7 @@
   justify-content: center;
   width: 2rem;
   height: 2rem;
-  border-radius: 999px;
+  border-radius: var(--radius);
   border: 1px solid var(--border);
   background: var(--surface);
   color: var(--muted);
