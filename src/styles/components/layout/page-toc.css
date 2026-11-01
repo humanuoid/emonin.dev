@@ -1,0 +1,127 @@
+/* Floating page TOC — BEM block "page-toc".
+   Two modes: COMPACT by default (icons only, labels collapsed to zero width);
+   EXPANDED on hover/focus-within (labels slide open, links take the full width
+   of the nav block). Mobile-first: bottom-centered pill with horizontal scroll.
+   From 56rem up: vertical rail docked on the right edge, vertically centered. */
+.page-toc {
+  position: fixed;
+  bottom: 0.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 15;
+  max-width: min(92vw, 30rem);
+}
+
+.page-toc__list {
+  list-style: none;
+  margin: 0;
+  padding: var(--inset); /* same inner inset as the theme toggle — one spec */
+  display: flex;
+  gap: 0.2rem;
+  overflow-x: auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-ghost-hover);
+}
+
+.page-toc__item {
+  flex-shrink: 0;
+}
+
+.page-toc__link {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* icon centered in compact mode */
+  width: 2.2rem; /* compact: a perfect square cell */
+  height: 2.2rem;
+  padding: 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+  border-radius: var(--radius); /* square */
+  transition:
+    color 0.15s ease,
+    background 0.15s ease,
+    padding 0.2s ease;
+}
+
+.page-toc__link svg {
+  flex-shrink: 0;
+}
+
+/* Compact mode: the label is collapsed to zero width AND zero margin, so the
+   icon has no phantom space on its right */
+.page-toc__label {
+  max-width: 0;
+  margin-left: 0;
+  opacity: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  transition:
+    max-width 0.25s ease,
+    margin-left 0.25s ease,
+    opacity 0.2s ease;
+}
+
+/* Expanded mode: labels slide open */
+.page-toc:hover .page-toc__label,
+.page-toc:focus-within .page-toc__label {
+  max-width: 12rem;
+  margin-left: 0.5rem;
+  opacity: 1;
+}
+
+/* Expanded mode: the link takes the full width of the nav block, its content
+   is left-aligned, with normal padding */
+.page-toc:hover .page-toc__link,
+.page-toc:focus-within .page-toc__link {
+  width: 100%;
+  height: auto;
+  padding: 0.35rem 0.5rem;
+  justify-content: flex-start;
+}
+
+.page-toc__link:hover {
+  color: var(--text);
+  background: color-mix(in srgb, var(--muted) 10%, transparent);
+}
+
+.page-toc__link--active {
+  color: var(--accent-contrast);
+  /* accent-hover (darker green in light theme) so the contrast text reads well */
+  background: var(--accent-hover);
+  font-weight: 600;
+}
+
+.page-toc__link--active:hover {
+  color: var(--accent-contrast);
+}
+
+@media (min-width: 56rem) {
+  .page-toc {
+    bottom: auto;
+    right: 1.25rem;
+    left: auto;
+    top: 50%;
+    transform: translateY(-50%);
+    max-width: none;
+  }
+
+  .page-toc__list {
+    flex-direction: column;
+    align-items: stretch;
+    overflow: visible;
+    padding: var(--inset);
+  }
+
+  .page-toc__item {
+    flex-shrink: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-toc__link,
+  .page-toc__label {
+    transition: none;
+  }
+}

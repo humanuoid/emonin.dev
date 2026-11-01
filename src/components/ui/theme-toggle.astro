@@ -2,8 +2,10 @@
 import Icon from './icon.astro';
 ---
 
-<!-- Light/dark switch. With no click, the site follows the system preference;
-     the first click stores an explicit choice (see the inline script in base-layout). -->
+<!-- Light/dark switch. Both icons are always visible; the accent knob slides over
+     the ACTIVE theme's icon (sun = light active, moon = dark active). With no click,
+     the site follows the system preference; the first click stores an explicit
+     choice (see the inline script in base-layout). -->
 <button
   type="button"
   class="theme-toggle icon-button"
@@ -13,8 +15,7 @@ import Icon from './icon.astro';
   aria-label="Basculer entre le thème clair et le thème sombre"
   title="Changer de thème"
 >
-  <span class="theme-toggle__knob">
-    <span class="theme-toggle__icon theme-toggle__icon--moon"><Icon name="moon" size={0.7} /></span>
-    <span class="theme-toggle__icon theme-toggle__icon--sun"><Icon name="sun" size={0.7} /></span>
-  </span>
+  <span class="theme-toggle__knob" aria-hidden="true"></span>
+  <span class="theme-toggle__icon theme-toggle__icon--sun"><Icon name="sun" size={0.85} stroke={2.5} /></span>
+  <span class="theme-toggle__icon theme-toggle__icon--moon"><Icon name="moon" size={0.85} stroke={2.5} /></span>
 </button>

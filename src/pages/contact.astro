@@ -12,8 +12,9 @@ const page = await getEntry('site', 'contact');
 if (!profile || profile.data.kind !== 'profile') throw new Error('Missing or invalid src/content/site/profile.md');
 if (!page || page.data.kind !== 'contact') throw new Error('Missing or invalid src/content/site/contact.md');
 
-// Success flag set by the form service redirect (/contact?sent=1)
-const sent = Astro.url.searchParams.get('sent') === '1';
+// Success flag set by the form service redirect (/contact?sent=1). The site is
+// fully static, so the query string is read client-side (see the inline script
+// below), not at build time.
 
 // No email anywhere: contact goes through the form, then the socials and the CV PDF
 const links = [
@@ -30,15 +31,18 @@ const links = [
   <main>
     <PageHeader icon={page.data.icon} title={page.data.title} intro={page.data.intro} />
     <div class="contact">
-      {sent && <p class="contact__success" role="status">{page.data.successMessage}</p>}
-      <ContactForm form={page.data.form} />
+      <p class="contact__success" role="status" hidden>
+        <Icon name="check-circle" />
+        {page.data.successMessage}
+      </p>
+      {page.data.linksTitle && <h2 class="contact__links-title">{page.data.linksTitle}</h2>}
       <ul class="contact__links">
         {
           links.map((link) => (
             <li>
               <a
                 href={link.href}
-                class="contact__link"
+                class="btn btn--ghost contact__link"
                 target={link.href.startsWith('http') ? '_blank' : undefined}
                 rel={link.href.startsWith('http') ? 'noopener me' : undefined}
               >
@@ -49,7 +53,14 @@ const links = [
           ))
         }
       </ul>
+      <ContactForm form={page.data.form} />
     </div>
   </main>
   <SiteFooter name={profile.data.name} credit={profile.data.credit} socials={profile.data.socials} />
+  <script is:inline>
+    // Reveal the success message when the form service redirected back with ?sent=1
+    if (new URLSearchParams(location.search).get('sent') === '1') {
+      document.querySelector('.contact__success')?.removeAttribute('hidden');
+    }
+  </script>
 </BaseLayout>

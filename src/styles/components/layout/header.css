@@ -1,69 +1,59 @@
 /* Site header — BEM block "header".
-   Surface background + bottom border; the shadow is a token so the dark theme stays flat.
-   Mobile-first: on small screens the brand is on its own row and the links + switch
-   share a second row; from 40rem up everything sits on a single row. */
+   STICKY: the header stays on top while scrolling. No shadow: the 3px bottom
+   border is the discreet separator, and it carries two accent elements — the
+   nav underline (desktop, resting on the active link) and a thin page-load
+   loader that sweeps across it once per page load.
+   Mobile-first: brand on its own row, hamburger + theme switch on the second
+   row; the nav links open as a dropdown panel. From 40rem up: single row,
+   inline links with the sliding underline. */
 .header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
   background: var(--surface);
-  border-bottom: 1px solid var(--border);
+  border-bottom: var(--nav-underline) solid var(--border); /* same 3px as the underlines */
   box-shadow: var(--header-shadow);
 }
 
-.header__nav {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 0.75rem 1.5rem;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem 1rem;
+/* Page-load loader: sweeps left to right across the bottom border, then fades out */
+.header__loader {
+  position: absolute;
+  bottom: calc(-1 * var(--nav-underline));
+  left: 0;
+  z-index: 3;
+  width: 0;
+  height: var(--nav-underline);
+  background: var(--accent);
+  pointer-events: none;
+  animation: header-loader 0.9s cubic-bezier(0.2, 0.6, 0.2, 1) forwards;
 }
 
-.header__brand {
-  font-weight: 700;
-  color: var(--text);
-  letter-spacing: -0.02em;
+@keyframes header-loader {
+  0% {
+    width: 0;
+    opacity: 1;
+  }
+  75% {
+    width: 100%;
+    opacity: 1;
+  }
+  100% {
+    width: 100%;
+    opacity: 0;
+  }
 }
 
-.header__brand-dot {
-  color: var(--accent);
-}
-
-.header__right {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem 0.75rem;
-  width: 100%;
-}
-
-.header__links {
-  position: relative;
-  display: flex;
-  gap: 0.25rem;
-  list-style: none;
-  padding: 0;
-  font-size: 0.875rem;
-}
-
-/* The pill li is transparent to the flex layout; the pill itself is
-   absolutely positioned relative to the list */
-.header__pill-li {
-  display: contents;
-}
-
-/* Shared sliding pill — only visible when JS enables the animated mode.
-   Without JS, each link keeps its own static :hover pill (fallback). */
-.header__pill {
+/* Shared sliding underline — desktop only (from 40rem up), sitting ON the
+   header's bottom border. On mobile the links keep their own static underline. */
+.header__indicator {
   display: none;
   position: absolute;
-  top: 0;
+  bottom: calc(-1 * var(--nav-underline)); /* rests exactly on the header border */
   left: 0;
+  z-index: 2;
   width: 0;
-  height: 100%;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--accent) 15%, transparent);
+  height: var(--nav-underline); /* same thickness as the nav link underline */
+  background: var(--accent);
   transition:
     left 0.25s cubic-bezier(0.4, 0, 0.2, 1),
     width 0.25s cubic-bezier(0.4, 0, 0.2, 1),
@@ -71,67 +61,209 @@
   pointer-events: none;
 }
 
-.header__links--animated .header__pill {
-  display: block;
+.header__nav {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  flex-wrap: nowrap; /* single row: brand left, burger right (mobile) */
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
 }
 
-/* In animated mode the shared pill carries the background, not the links */
-.header__links--animated .header__link,
-.header__links--animated .header__link:hover,
-.header__links--animated .header__link--active,
-.header__links--animated .header__link--active:hover {
-  background: none;
+/* Brand lockup: two-line text (name over role), no logo mark */
+.header__brand {
+  display: inline-flex;
+  align-items: center;
 }
 
-/* Pill resting on a non-active hovered link: neutral tint instead of accent */
-.header__links--animated .header__pill--hover {
-  background: color-mix(in srgb, var(--muted) 14%, transparent);
+.header__brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
 }
 
-/* Nav links use a soft pill instead of the animated underline (see base.css) */
+.header__brand-name {
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+
+.header__brand-role {
+  font-size: 0.68rem;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.header__right {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: flex-end; /* mobile: only the hamburger shows here */
+  gap: 0.5rem;
+  width: auto;
+}
+
+/* Hamburger button — mobile only, hidden from 40rem up */
+.header__menu-button {
+  display: inline-flex;
+}
+
+.header__menu-icon--open {
+  display: none;
+}
+
+.header__nav--open .header__menu-icon--open {
+  display: inline-flex;
+}
+
+.header__nav--open .header__menu-icon--close {
+  display: none;
+}
+
+/* Mobile: the nav links are a dropdown panel under the header, hidden until
+   the hamburger opens it */
+.header__links {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 29;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+  padding: 0.25rem 1.5rem 0.75rem;
+  list-style: none;
+  background: var(--surface);
+  border-bottom: var(--nav-underline) solid var(--border);
+  font-size: 1rem;
+}
+
+.header__nav--open .header__links {
+  display: flex;
+}
+
+/* Nav links in the mobile dropdown: full-row tinted background on hover/active
+   (no underline — it does not read well in a stacked menu) */
 .header__link {
   position: relative;
   z-index: 1;
+  display: block;
   color: var(--muted);
-  padding: 0.4rem 0.75rem;
-  border-radius: 999px;
-  transition: color 0.15s ease;
+  padding: 0.65rem 0.75rem;
+  border-radius: var(--radius);
+  transition:
+    color 0.15s ease,
+    background 0.15s ease;
 }
 
 .header__link:hover {
   color: var(--text);
+  background: color-mix(in srgb, var(--muted) 10%, transparent);
 }
 
-.header__link--active {
-  color: var(--accent);
-  font-weight: 600;
-}
-
+.header__link--active,
 .header__link--active:hover {
   color: var(--accent);
+  font-weight: 600;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+/* The theme switch row at the bottom of the mobile menu */
+.header__theme-item {
+  display: flex;
+  align-items: center;
+  margin-top: 0.25rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .header__pill {
+  .header__indicator {
     transition: none;
+  }
+
+  .header__loader {
+    display: none;
   }
 }
 
-/* Wider screens: single-row header, slightly larger nav */
+/* Wider screens: single-row header, inline links, sliding underline indicator */
 @media (min-width: 40rem) {
   .header__nav {
-    flex-wrap: nowrap;
     padding: 1rem 1.5rem;
   }
 
   .header__right {
-    width: auto;
-    flex-wrap: nowrap;
-    justify-content: flex-end;
     gap: 1.25rem;
   }
 
+  .header__menu-button {
+    display: none;
+  }
+
   .header__links {
+    position: static;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--inset); /* same tight inset as the page TOC */
+    padding: 0;
+    background: none;
+    border: none;
     font-size: 0.925rem;
+  }
+
+  /* Desktop: links get the underline treatment again (no-JS fallback; the
+     sliding indicator takes over when JS is on) */
+  .header__link {
+    display: inline-block;
+    padding: 0.4rem 0.5rem;
+    background: none;
+  }
+
+  .header__link:hover,
+  .header__link--active {
+    background: none;
+    box-shadow: inset 0 calc(-1 * var(--nav-underline)) 0 0 var(--accent);
+  }
+
+  .header__link--active,
+  .header__link--active:hover {
+    color: var(--accent);
+  }
+
+  .header__link:hover {
+    color: var(--text);
+  }
+
+  /* Desktop: the theme switch cell renders inline in the header row,
+     with clear space after the last nav link */
+  .header__theme-item {
+    margin: 0 0 0 1.25rem;
+    padding: 0;
+    border: none;
+  }
+
+  /* JS adds .header--animated to the header once it can position the indicator */
+  .header--animated .header__indicator {
+    display: block;
+  }
+
+  /* In animated mode the shared indicator carries the underline, not the links */
+  .header--animated .header__link,
+  .header--animated .header__link:hover,
+  .header--animated .header__link--active,
+  .header--animated .header__link--active:hover {
+    background: none;
+    box-shadow: none;
+  }
+
+  /* Indicator resting on a non-active hovered link: neutral instead of accent */
+  .header--animated .header__indicator--hover {
+    background: color-mix(in srgb, var(--muted) 55%, transparent);
   }
 }

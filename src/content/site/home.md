@@ -4,10 +4,12 @@ hero:
   eyebrow: Bonjour, je suis
   title: Emmanuel Monin
   subtitle: >-
-    Architecte développeur [[Symfony]], en formation Data Engineer. 15 ans de
-    développement web, dont 8 ans sur des systèmes critiques : conformité et
-    protection des données ([[RGPD]]), performance à grande échelle, fiabilité
-    en production.
+    Architecte développeur [[Symfony]], aujourd'hui en formation Data Engineer.
+    15 ans à concevoir des applications web utiles et fiables — plateforme de
+    conformité [[RGPD]], backoffices financiers, schémas de [[data]]
+    réglementaires. Lead dev devenu architecte, j'accorde autant d'importance à
+    la conception qu'à la production : code maintenable, décisions explicites,
+    mises en production sereines.
   location: 25 min de Lyon Part-Dieu en TER
   primaryCta:
     href: /emmanuel-monin-architecte-developpeur-lyon.pdf

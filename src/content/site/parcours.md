@@ -10,6 +10,19 @@ titles:
   education: Formations
   projects: Projets marquants
   values: Valeurs & loisirs
+toc:
+  - id: competences
+    label: Compétences
+    icon: braces
+  - id: experience
+    label: Expérience
+    icon: briefcase
+  - id: projets
+    label: Projets
+    icon: folder
+  - id: valeurs
+    label: Valeurs
+    icon: heart
 sectionIcons:
   skills: braces
   experience: briefcase

@@ -8,24 +8,30 @@ Defined in `src/styles/tokens.css`. Light theme by default; dark theme comes fro
 
 | Token | Light | Dark |
 | ----- | ----- | ---- |
-| `--bg` | `#fcfcfc` | `#000000` (pure black, max contrast) |
-| `--surface` | `#ffffff` | `#1b1b21` (a notch above `--bg` so buttons/cards stand out) |
-| `--text` | `#1c1c1e` | `#ffffff` (max contrast on dark) |
-| `--muted` | `#6b7280` | `#a8a8b3` |
-| `--border` | `#e8e8ea` | `#2e2e33` |
-| `--accent` | `#6266bc` softened mauve (PHP `#777bb4` hue, less vivid) | `#a78bfa` bright electric violet |
-| `--accent-hover` | `#5559a3` | `#c4b5fd` |
-| `--accent-contrast` | `#ffffff` | `#2e1065` |
+| `--bg` | `#fbfbfb` (very light neutral gray) | `#0e0e0e` (near-black, not pure black) |
+| `--surface` | `#ffffff` | `#161616` (a notch above `--bg` so buttons/cards stand out) |
+| `--text` | `#1c1c1e` | `#f2f5f3` (near-white, strong contrast) |
+| `--muted` | `#4b5563` | `#d4d9d6` |
+| `--border` | `#e8e8ea` | `#262626` |
+| `--accent` | `#059669` emerald (primary: modern, simple, environment) | `#34d399` light emerald |
+| `--accent-hover` | `#047857` (darkest site green) | `#6ee7b7` — also the shared "active surface" (TOC active link, toggle knob) |
+| `--accent-soft` | `#34d399` (lightest site green; logo inner layer) | `#a7f3d0` |
+| `--accent-contrast` | `#ffffff` | `#06251a` |
 | `--warning`, `--warning-hover` | `#d97706`, `#b45309` | `#fbbf24`, `#fcd34d` (amber, for warning accents: callout liseret, form notice) |
+| `--error` | `#dc2626` (required markers) | `#f87171` |
 | `--mistral` | `#fa520f` | `#ff8205` |
 | `--mistral-hover` | `#e04a0c` | `#ffa94d` |
-| `--radius` | `0.5rem` | same |
-| `--radius-lg` | `0.9rem` (buttons) | same |
+| `--radius`, `--radius-lg` | `0` — squared corners everywhere | same |
+| `--nav-underline` | `3px` — header border, nav indicator, nav-link underline, page-load loader | same |
+| `--inset` | `0.1rem` — shared inner inset (theme-toggle knob offset, page-TOC block padding) | same |
+| `--band-bg` | section band background on inner pages = accent desaturated 10% toward muted, 3.6% over `--bg` (also the logo's center layer) | same (recomputed from dark tokens) |
 | `--max-width` | `56rem` | same |
 | `--font-sans` | Inter (Google Fonts), system-ui fallback | same |
 | `--header-shadow`, `--shadow-btn*`, `--shadow-ghost*` | subtle light shadows | `none` — the dark theme is flat |
 
-The accent is a vivid mauve inspired by PHP's `#777bb4` in light, and a bright electric violet in dark (on a pure black background, for maximum contrast): a nod to the language, distinct from GitHub green and LinkedIn blue. `--mistral` keeps the Mistral brand orange for the footer credit only, independent from `--accent`.
+The accent is emerald in light (`#059669`), a lighter emerald in dark (`#34d399` on a near-black background): modern, simple, environment. `--mistral` keeps the Mistral brand orange for the footer credit only, independent from `--accent`.
+
+**Logo**: no mark in the header (text-only brand: full name + role). The 3-layer hexagon exists only as `public/favicon.svg`.
 
 ## CSS architecture
 

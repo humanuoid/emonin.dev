@@ -3,14 +3,24 @@
   color-scheme: light;
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
 
-  --bg: #fcfcfc;
+  --bg: #fbfbfb; /* very light neutral gray, 3% lighter than #f4f4f4 */
+
+  /* Shared inner inset (toggle knob offset, TOC block padding) — one spec */
+  --inset: 0.1rem;
+
+  /* Section band background (inner pages) — also the logo's center layer.
+     Accent pre-desaturated 10% toward muted, mixed at 3.6% over --bg */
+  --band-bg: color-mix(in srgb, color-mix(in srgb, var(--accent) 90%, var(--muted)) 3.6%, var(--bg));
   --surface: #ffffff;
   --text: #1c1c1e;
-  --muted: #6b7280;
+  --muted: #4b5563; /* a notch darker for readability on light */
   --border: #e8e8ea;
 
-  --accent: #6266bc; /* softened mauve, PHP #777bb4 hue (S≈40%) */
-  --accent-hover: #5559a3;
+  --error: #dc2626; /* red for required markers */
+
+  --accent: #059669; /* emerald — modern, simple, environment (primary) */
+  --accent-hover: #047857; /* darkest site green — also the shared active surface */
+  --accent-soft: #34d399; /* lightest site green (logo inner layer) */
   --accent-contrast: #ffffff;
 
   --warning: #d97706; /* amber, for warning accents (callout liseret, form notice) */
@@ -20,12 +30,17 @@
   --mistral: #fa520f;
   --mistral-hover: #e04a0c;
 
-  --radius: 0.5rem;
-  --radius-lg: 0.9rem;
+  --radius: 0; /* squared corners everywhere (buttons, badges, cards, inputs, toggle) */
+  --radius-lg: 0;
   --max-width: 56rem;
 
-  /* Elevation shadows — light theme only, the dark theme is flat */
-  --header-shadow: 0 1px 3px rgb(0 0 0 / 0.06);
+  /* Shared thickness: header bottom border, nav indicator, nav link hover
+     underline and the page-load loader all use this */
+  --nav-underline: 3px;
+
+  /* Elevation shadows — light theme only, the dark theme is flat.
+     The header has no shadow: its bottom border carries the nav underline + loader */
+  --header-shadow: none;
   --shadow-btn: 0 4px 14px -2px rgb(0 0 0 / 0.12), inset 0 1px 0 rgb(255 255 255 / 0.2);
   --shadow-btn-hover: 0 6px 18px -2px rgb(0 0 0 / 0.16), inset 0 1px 0 rgb(255 255 255 / 0.2);
   --shadow-btn-active: 0 2px 6px -2px rgb(0 0 0 / 0.1);
@@ -39,15 +54,18 @@
 :root[data-theme='dark'] {
   color-scheme: dark;
 
-  --bg: #000000;
-  --surface: #1b1b21; /* a notch lighter than --bg so buttons and cards stand out */
-  --text: #ffffff; /* lighter main text for better contrast */
-  --muted: #a8a8b3;
-  --border: #2e2e33;
+  --bg: #0e0e0e; /* neutral near-black, less absolute than pure black */
+  --surface: #161616; /* a notch lighter than --bg so buttons and cards stand out */
+  --text: #f2f5f3; /* near-white main text for strong contrast */
+  --muted: #d4d9d6; /* lighter muted text on dark */
+  --border: #262626;
 
-  --accent: #a78bfa; /* electric violet */
-  --accent-hover: #c4b5fd;
-  --accent-contrast: #2e1065;
+  --error: #f87171;
+
+  --accent: #34d399; /* light emerald, readable on the dark background */
+  --accent-hover: #6ee7b7;
+  --accent-soft: #a7f3d0; /* lightest site green */
+  --accent-contrast: #06251a;
 
   --warning: #fbbf24;
   --warning-hover: #fcd34d;
@@ -70,15 +88,18 @@
   :root:not([data-theme='light']) {
     color-scheme: dark;
 
-    --bg: #000000;
-    --surface: #1b1b21;
-    --text: #ffffff;
-    --muted: #a8a8b3;
-    --border: #2e2e33;
+    --bg: #0e0e0e;
+    --surface: #161616;
+    --text: #f2f5f3;
+    --muted: #d4d9d6;
+    --border: #262626;
 
-    --accent: #a78bfa;
-    --accent-hover: #c4b5fd;
-    --accent-contrast: #2e1065;
+    --error: #f87171;
+
+    --accent: #34d399;
+    --accent-hover: #6ee7b7;
+    --accent-soft: #a7f3d0;
+    --accent-contrast: #06251a;
 
     --warning: #fbbf24;
     --warning-hover: #fcd34d;

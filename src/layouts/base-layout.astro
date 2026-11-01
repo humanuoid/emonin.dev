@@ -70,42 +70,74 @@ const showFloatingBadge = pathname !== '/';
         });
       });
 
-      // Header nav: the shared pill slides to the hovered/focused link and
-      // rests on the active one. Without JS the per-link :hover pill remains.
+      // Mobile nav: the hamburger toggles the dropdown panel (aria-expanded kept
+      // in sync). It closes on link click, Escape, or when resizing to desktop.
+      var nav = document.querySelector('.header__nav');
+      var navToggle = document.querySelector('[data-nav-toggle]');
+      if (nav && navToggle) {
+        var closeNav = function () {
+          nav.classList.remove('header__nav--open');
+          navToggle.setAttribute('aria-expanded', 'false');
+          navToggle.setAttribute('aria-label', 'Ouvrir le menu');
+        };
+        navToggle.addEventListener('click', function () {
+          var open = nav.classList.toggle('header__nav--open');
+          navToggle.setAttribute('aria-expanded', String(open));
+          navToggle.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
+        });
+        nav.querySelectorAll('.header__link').forEach(function (link) {
+          link.addEventListener('click', closeNav);
+        });
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape') closeNav();
+        });
+        window.addEventListener('resize', function () {
+          if (window.innerWidth >= 640) closeNav();
+        });
+      }
+
+      // Header nav: the shared underline sits ON the header's bottom border and
+      // slides to the hovered/focused link, resting on the active one. Positions
+      // are computed against the header box (the indicator is a header child).
+      // Without JS the per-link :hover underline remains.
+      var header = document.querySelector('.header');
       var navList = document.querySelector('.header__links');
-      if (navList) {
-        var pill = navList.querySelector('.header__pill');
+      if (header && navList) {
+        var indicator = header.querySelector('.header__indicator');
         var navLinks = Array.prototype.slice.call(navList.querySelectorAll('.header__link'));
         var activeLink = navList.querySelector('.header__link--active') || navLinks[0];
-        function movePill(link, isHover) {
-          pill.style.left = link.offsetLeft + 'px';
-          pill.style.width = link.offsetWidth + 'px';
-          pill.classList.toggle('header__pill--hover', !!isHover);
+        function moveIndicator(link, isHover) {
+          var headerRect = header.getBoundingClientRect();
+          var linkRect = link.getBoundingClientRect();
+          indicator.style.left = linkRect.left - headerRect.left + 'px';
+          indicator.style.width = linkRect.width + 'px';
+          indicator.classList.toggle('header__indicator--hover', !!isHover);
         }
-        function snapPill() {
-          pill.style.transition = 'none';
-          movePill(activeLink, false);
+        function snapIndicator() {
+          indicator.style.transition = 'none';
+          moveIndicator(activeLink, false);
           requestAnimationFrame(function () {
-            pill.style.transition = '';
+            indicator.style.transition = '';
           });
         }
-        navList.classList.add('header__links--animated');
+        header.classList.add('header--animated');
         navLinks.forEach(function (link) {
           link.addEventListener('mouseenter', function () {
-            movePill(link, link !== activeLink);
+            moveIndicator(link, link !== activeLink);
           });
           link.addEventListener('focus', function () {
-            movePill(link, link !== activeLink);
+            moveIndicator(link, link !== activeLink);
           });
         });
         navList.addEventListener('mouseleave', function () {
-          movePill(activeLink, false);
+          moveIndicator(activeLink, false);
         });
         navList.addEventListener('focusout', function () {
-          movePill(activeLink, false);
+          moveIndicator(activeLink, false);
         });
-        window.addEventListener('resize', snapPill);
-        snapPill();
+        window.addEventListener('resize', snapIndicator);
+        window.addEventListener('load', snapIndicator); // re-measure once fonts land
+        snapIndicator();
       }
     </script>
   </body>

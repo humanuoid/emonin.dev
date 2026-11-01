@@ -20,16 +20,17 @@ interface LabeledItems {
 }
 
 interface Props {
+  id?: string;
   icon: SectionIcon;
   title: string;
   values: LabeledItems;
   hobbies: LabeledItems;
 }
 
-const { icon, title, values, hobbies } = Astro.props;
+const { id, icon, title, values, hobbies } = Astro.props;
 ---
 
-<section class="values" aria-labelledby="values-title">
+<section id={id} class="values" aria-labelledby="values-title">
   <h2 id="values-title" class="values__title">
     <span class="values__title-icon"><Icon name={icon} size={0.85} /></span>
     {title}

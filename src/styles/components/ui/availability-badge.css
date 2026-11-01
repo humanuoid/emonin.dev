@@ -1,5 +1,5 @@
 /* Availability badge — ONE format in both variants (inline in the hero,
-   floating fixed bottom-right on inner pages): same pill shape (999px),
+   floating fixed bottom-right on inner pages): same squared shape (var(--radius)),
    same padding when the text is shown. Only difference: the floating variant
    collapses to the dot alone below 40rem (mobile-first base), the inline one
    always shows its text.
@@ -9,7 +9,7 @@
   align-items: center;
   gap: 0.5rem;
   border: 1px solid var(--border);
-  border-radius: 999px;
+  border-radius: var(--radius);
   background: var(--surface);
   color: var(--text);
   padding: 0.45rem; /* collapsed base (floating on mobile) */
@@ -46,6 +46,23 @@
   }
 
   .availability-badge--floating .availability-badge__text {
+    display: inline-flex;
+    flex-direction: column;
+    line-height: 1.3;
+  }
+}
+
+/* Mobile: the collapsed dot expands while touched (:active) and on tap focus
+   (:focus, the badge is tabindex=0) to reveal what it means; it collapses back
+   on blur */
+@media (max-width: 39.99rem) {
+  .availability-badge--floating:active,
+  .availability-badge--floating:focus {
+    padding: 0.5rem 1.05rem;
+  }
+
+  .availability-badge--floating:active .availability-badge__text,
+  .availability-badge--floating:focus .availability-badge__text {
     display: inline-flex;
     flex-direction: column;
     line-height: 1.3;

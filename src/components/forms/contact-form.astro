@@ -7,6 +7,7 @@ interface FormLabels {
   messageLabel: string;
   submitLabel: string;
   notice: string;
+  requiredHint?: string;
 }
 
 interface Props {
@@ -16,11 +17,13 @@ interface Props {
 const { form } = Astro.props;
 
 // Static-friendly contact form via Web3Forms (https://web3forms.com).
-// The access key NEVER lives in the repo or in this file: it is inlined at
-// build time from the environment only — local .env (git-ignored) in dev,
-// GitHub Actions secret PUBLIC_WEB3FORMS_ACCESS_KEY in prod.
-// When the variable is missing, no access_key field is rendered at all.
+// Keys NEVER live in the repo or in this file: they are inlined at build time
+// from the environment only — local .env (git-ignored) in dev, GitHub Actions
+// secrets in prod. When a variable is missing, the related element is not rendered.
 const accessKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY as string | undefined;
+// hCaptcha SITE key is public by design (rendered in the page). The SECRET key is
+// never needed here: Web3Forms verifies the captcha token server-side.
+const hcaptchaSiteKey = import.meta.env.PUBLIC_HCAPTCHA_SITE_KEY as string | undefined;
 ---
 
 {
@@ -38,39 +41,59 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY as string | undefi
         aria-hidden="true"
       />
 
+      {form.requiredHint && <p class="contact-form__hint">{form.requiredHint}</p>}
+
       <div class="contact-form__field">
-        <label class="contact-form__label" for="contact-name">{form.nameLabel}</label>
         <input
           class="contact-form__input"
           type="text"
           id="contact-name"
           name="name"
+          placeholder=" "
           required
+          aria-required="true"
           autocomplete="name"
         />
+        <label class="contact-form__label" for="contact-name">
+          {form.nameLabel} <span class="contact-form__required" aria-hidden="true">*</span>
+        </label>
       </div>
 
       <div class="contact-form__field">
-        <label class="contact-form__label" for="contact-email">{form.emailLabel}</label>
         <input
           class="contact-form__input"
           type="email"
           id="contact-email"
           name="email"
+          placeholder=" "
           required
+          aria-required="true"
           autocomplete="email"
         />
+        <label class="contact-form__label" for="contact-email">
+          {form.emailLabel} <span class="contact-form__required" aria-hidden="true">*</span>
+        </label>
       </div>
 
-      <div class="contact-form__field">
-        <label class="contact-form__label" for="contact-message">{form.messageLabel}</label>
+      <div class="contact-form__field contact-form__field--area">
         <textarea
           class="contact-form__input contact-form__input--area"
           id="contact-message"
           name="message"
           rows="6"
-          required></textarea>
+          placeholder=" "
+          required
+          aria-required="true"></textarea>
+        <label class="contact-form__label" for="contact-message">
+          {form.messageLabel} <span class="contact-form__required" aria-hidden="true">*</span>
+        </label>
       </div>
+
+      {hcaptchaSiteKey && (
+        <div class="contact-form__captcha">
+          <div class="h-captcha" data-sitekey={hcaptchaSiteKey} />
+        </div>
+      )}
 
       <button class="btn btn--primary contact-form__submit" type="submit">
         {form.submitLabel}
@@ -81,3 +104,14 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY as string | undefi
     <p class="contact-form__notice">{form.notice}</p>
   )
 }
+{
+  hcaptchaSiteKey && accessKey && (
+    <script is:inline src="https://js.hcaptcha.com/1/api.js" async defer></script>
+  )
+}
+<script>
+  // Web3Forms ignores a relative redirect URL: rebuild it as absolute from the
+  // current origin, so the same build works on localhost and on emonin.dev.
+  const redirectField = document.querySelector<HTMLInputElement>('input[name="redirect"]');
+  if (redirectField) redirectField.value = `${location.origin}/contact?sent=1`;
+</script>

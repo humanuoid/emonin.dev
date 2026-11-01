@@ -1,14 +1,16 @@
 ---
 // Inline SVG icons. Brand logos are filled (Simple Icons style),
-// UI icons are stroked (Lucide style, stroke 1.5, round caps).
+// UI icons are stroked (Lucide style, stroke 2, round caps).
 // Sources: https://simpleicons.org and https://lucide.dev
 interface Props {
   name: keyof typeof icons;
   // Size in em, relative to the surrounding text so icons always match it (default 1em)
   size?: number;
+  // Stroke width for stroked icons (default 2); filled brand icons ignore it
+  stroke?: number;
 }
 
-const { name, size = 1 } = Astro.props;
+const { name, size = 1, stroke = 2 } = Astro.props;
 
 const icons = {
   github: {
@@ -139,6 +141,14 @@ const icons = {
     filled: false,
     path: '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
   },
+  'check-circle': {
+    filled: false,
+    path: '<path d="M21.8 10A10 10 0 1 1 17 3.34"/><path d="m9 11 3 3L22 4"/>',
+  },
+  menu: {
+    filled: false,
+    path: '<path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/>',
+  },
   briefcase: {
     filled: false,
     path: '<rect width="20" height="14" x="2" y="7" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>',
@@ -176,7 +186,7 @@ const icon = icons[name];
   viewBox="0 0 24 24"
   fill={icon.filled ? 'currentColor' : 'none'}
   stroke={icon.filled ? 'none' : 'currentColor'}
-  stroke-width={icon.filled ? undefined : '1.5'}
+  stroke-width={icon.filled ? undefined : String(stroke)}
   stroke-linecap={icon.filled ? undefined : 'round'}
   stroke-linejoin={icon.filled ? undefined : 'round'}
   aria-hidden="true"

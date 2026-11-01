@@ -60,7 +60,7 @@
 
 .project-card__tag {
   border: 1px solid var(--border);
-  border-radius: 999px;
+  border-radius: var(--radius);
   padding: 0.08rem 0.5rem;
   font-size: 0.75rem;
   color: var(--muted);

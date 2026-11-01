@@ -74,12 +74,12 @@
   padding: 0;
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem;
+  gap: 0.25rem 0.4rem; /* tighter vertical rhythm between tag rows */
 }
 
 .skills__tag {
   border: 1px solid var(--border);
-  border-radius: 999px;
+  border-radius: var(--radius);
   background: var(--surface);
   padding: 0.05rem 0.45rem;
   font-size: 0.7rem;

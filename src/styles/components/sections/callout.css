@@ -44,3 +44,9 @@
   font-size: 0.78rem;
   color: var(--muted);
 }
+
+/* Keeps a space between the "Sources :" label and the first link even in
+   minified HTML */
+.callout__sources a:first-of-type {
+  margin-left: 0.25rem;
+}
