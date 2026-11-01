@@ -2,15 +2,26 @@
 .page-header {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 4rem 1.5rem 2rem;
+  /* Same 3rem bottom rhythm as sections (padding: 3rem 1.5rem), so the intro
+     never touches the first section — banded or not */
+  padding: 4rem 1.5rem 3rem;
 }
 
 .page-header__title {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
   font-size: clamp(2rem, 5vw, 2.75rem);
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1.1;
   margin-bottom: 0.75rem;
+}
+
+.page-header__title-icon {
+  display: inline-flex;
+  color: var(--accent);
+  flex-shrink: 0;
 }
 
 .page-header__intro {

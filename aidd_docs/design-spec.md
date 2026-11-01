@@ -16,6 +16,7 @@ Defined in `src/styles/tokens.css`. Light theme by default; dark theme comes fro
 | `--accent` | `#6266bc` softened mauve (PHP `#777bb4` hue, less vivid) | `#a78bfa` bright electric violet |
 | `--accent-hover` | `#5559a3` | `#c4b5fd` |
 | `--accent-contrast` | `#ffffff` | `#2e1065` |
+| `--warning`, `--warning-hover` | `#d97706`, `#b45309` | `#fbbf24`, `#fcd34d` (amber, for warning accents: callout liseret, form notice) |
 | `--mistral` | `#fa520f` | `#ff8205` |
 | `--mistral-hover` | `#e04a0c` | `#ffa94d` |
 | `--radius` | `0.5rem` | same |
@@ -35,40 +36,54 @@ src/styles/
   tokens.css            design tokens (light + dark + [data-theme])
   base.css              reset + base element styles
   global.css            @import of everything
-  components/
-    buttons.css         BEM block "btn"
-    icon-button.css     BEM block "icon-button" (shared circular icon button)
-    header.css          BEM block "header"
-    theme-toggle.css    BEM block "theme-toggle" (switch built on .icon-button)
-    hero.css            BEM block "hero"
-    page-header.css     BEM block "page-header"
-    preview-section.css BEM block "preview"
-    skills-section.css  BEM block "skills"
-    project-card.css    BEM blocks "projects" and "project-card"
-    contact-form.css    BEM blocks "contact" and "contact-form"
-    footer.css          BEM block "footer"
+  components/           mirrors src/components/ subfolders
+    ui/
+      buttons.css         BEM block "btn"
+      icon-button.css     BEM block "icon-button" (shared circular icon button)
+      theme-toggle.css    BEM block "theme-toggle" (switch built on .icon-button)
+      tooltip.css         [data-hint]::after tooltip (hover + focus), used by tech tags
+    layout/
+      header.css          BEM block "header"
+      page-header.css     BEM block "page-header"
+      footer.css          BEM block "footer"
+    sections/
+      hero.css            BEM block "hero"
+      preview-section.css BEM block "preview"
+      skills-section.css  BEM block "skills"
+      experience-section.css  BEM block "experience"
+      projects-section.css    BEM block "projects"
+      values-section.css      BEM block "values"
+    cards/
+      project-card.css    BEM block "project-card"
+      experience-card.css BEM block "experience-card"
+    forms/
+      contact-form.css    BEM blocks "contact" and "contact-form"
 ```
 
 - Naming: BEM. Block = component (`header`, `hero`, `footer`, `btn`), element = `block__element`, modifier = `block--modifier` (e.g. `btn--primary`, `btn--ghost`).
-- Astro components in `src/components/` contain markup only, no `<style>`. Add a component's styles as one file in `src/styles/components/` and import it in `global.css`.
+- Astro components in `src/components/` contain markup only, no `<style>`, and no hardcoded text: pages pass content from `src/content/` collections as props. Components are grouped by role — `layout/` (page chrome), `sections/` (page sections), `cards/` (list items), `forms/`, `ui/` (primitives). Add a component's styles as one file in the matching `src/styles/components/` subfolder and import it in `global.css`.
 - No CSS framework, no utility library: plain CSS with custom properties, mobile-first, relative units.
 
 ## Components
 
 | Component | File | BEM classes |
 | --------- | ---- | ----------- |
-| Site header | `site-header.astro` | `header`, `header__nav`, `header__brand`, `header__brand-dot`, `header__right`, `header__links` (+`--animated`), `header__pill-li`, `header__pill` (+`--hover`), `header__link`, `header__link--active` |
-| Theme switch | `theme-toggle.astro` | `theme-toggle icon-button`, `theme-toggle__knob`, `theme-toggle__icon--sun`, `theme-toggle__icon--moon` |
-| Icon button | in `icon-button.css` | `icon-button` (also used by `footer__social-link`) |
-| Hero | `hero-section.astro` | `hero`, `hero__eyebrow`, `hero__title`, `hero__subtitle`, `hero__actions` |
-| Buttons | in `buttons.css` | `btn`, `btn--sm`, `btn--lg`, `btn--primary`, `btn--ghost` |
-| Page header | `page-header.astro` | `page-header`, `page-header__title`, `page-header__intro` |
-| Preview section | `preview-section.astro` | `preview`, `preview__title`, `preview__list`, `preview__item`, `preview__cta` |
-| Skills section | `skills-section.astro` | `skills`, `skills__title`, `skills__groups`, `skills__group`, `skills__group-title`, `skills__tags`, `skills__tag` |
-| Project card | `project-card.astro` | `projects`, `projects__title`, `projects__grid`, `project-card`, `project-card__title`, `project-card__description`, `project-card__tags`, `project-card__tag`, `project-card__links`, `project-card__link` |
-| Contact form | `contact-form.astro` | `contact`, `contact__success`, `contact__links`, `contact__link`, `contact-form`, `contact-form__honeypot`, `contact-form__field`, `contact-form__label`, `contact-form__input`, `contact-form__input--area`, `contact-form__submit` |
-| Site footer | `site-footer.astro` | `footer`, `footer__inner`, `footer__copyright`, `footer__credit`, `footer__socials`, `footer__social-link` |
-| Icon | `icon.astro` | inline SVG, no class |
+| Site header | `layout/site-header.astro` (prop: `nav`) | `header`, `header__nav`, `header__brand`, `header__brand-dot`, `header__right`, `header__links` (+`--animated`), `header__pill-li`, `header__pill` (+`--hover`), `header__link`, `header__link--active` |
+| Theme switch | `ui/theme-toggle.astro` | `theme-toggle icon-button`, `theme-toggle__knob`, `theme-toggle__icon--sun`, `theme-toggle__icon--moon` |
+| Icon button | in `ui/icon-button.css` | `icon-button` (also used by `footer__social-link`) |
+| Hero | `sections/hero-section.astro` (prop: `hero`, h1 icon + CTAs with icons) | `hero`, `hero__eyebrow`, `hero__title`, `hero__title-icon`, `hero__subtitle`, `hero__location`, `hero__actions` |
+| Buttons | in `ui/buttons.css` | `btn`, `btn--sm`, `btn--lg`, `btn--primary`, `btn--ghost` |
+| Page header | `layout/page-header.astro` (props: `icon?`, `title`, `intro`) | `page-header`, `page-header__title`, `page-header__title-icon`, `page-header__intro` |
+| Preview section | `sections/preview-section.astro` (prop: `preview`, highlight cards) | `preview`, `preview__title`, `preview__grid`, `preview__highlight`, `preview__icon`, `preview__highlight-title`, `preview__highlight-text`, `preview__cta` |
+| Skills section | `sections/skills-section.astro` (props: `title`, `groups`; group icon + neutral title, masonry columns, tags get `data-hint` from the glossary) | `skills`, `skills__title`, `skills__groups`, `skills__group`, `skills__group-title`, `skills__group-icon`, `skills__group-description`, `skills__tags`, `skills__tag` |
+| Experience section | `sections/experience-section.astro` (props: `title`, `educationTitle`, `entries`) | `experience`, `experience__title`, `experience__subtitle`, `experience__list` |
+| Experience card | `cards/experience-card.astro` (prop: `entry`) | `experience-card`, `experience-card__period`, `experience-card__body`, `experience-card__role`, `experience-card__meta`, `experience-card__summary`, `experience-card__highlights` |
+| Projects section | `sections/projects-section.astro` (props: `title`, `projects`) | `projects`, `projects__title`, `projects__grid` |
+| Project card | `cards/project-card.astro` (props: `project`, `linkLabels`; tags carry `data-hint` tooltips) | `project-card`, `project-card__heading`, `project-card__title`, `project-card__period`, `project-card__description`, `project-card__tags`, `project-card__tag`, `project-card__links`, `project-card__link` |
+| Values section | `sections/values-section.astro` (props: `title`, `values`, `hobbies`; each tag has an icon) | `values`, `values__title`, `values__groups`, `values__group`, `values__group-title`, `values__tags`, `values__tag` |
+| Contact form | `forms/contact-form.astro` | `contact`, `contact__success`, `contact__links`, `contact__link`, `contact-form`, `contact-form__honeypot`, `contact-form__field`, `contact-form__label`, `contact-form__input`, `contact-form__input--area`, `contact-form__submit` |
+| Site footer | `layout/site-footer.astro` (prop: `socials`) | `footer`, `footer__inner`, `footer__copyright`, `footer__credit`, `footer__socials`, `footer__social-link` |
+| Icon | `ui/icon.astro` | inline SVG, no class |
 
 ## Theme
 
@@ -101,7 +116,25 @@ Nav links in the header do NOT use the underline. They share a single sliding pi
 Inline SVG through `src/components/icon.astro` (props: `name`, `size`), colored with `currentColor`. No icon library dependency.
 
 - Brand logos: filled, paths from Simple Icons (`github`, `linkedin`, `mistral`).
-- UI icons: stroked 1.5px round caps, paths from Lucide (`mail`, `arrow-up-right`, `download`, `send`).
+- UI icons: stroked 1.5px round caps, paths from Lucide (`mail`, `arrow-up-right`, `arrow-right`, `download`, `send`, `layers`, `database`, `shield-check`, `target`, `lightbulb`, `users`, `zap`, `footprints`, `mountain`, `trees`, `gamepad-2`, `utensils-crossed`, `code`, `monitor`, `flask-conical`, `sparkles`, `server`, `user`, `compass`, `map-pin`, `file-text`, `x`, `briefcase`, `folder`, `heart`).
+
+## Tooltips on tech tags
+
+- Any element with a `data-hint` attribute gets a pure-CSS tooltip (`ui/tooltip.css`): shown on `:hover` and `:focus` (tags are `tabindex="0"`, so a tap on mobile shows it too), inverted colors (`--text` on `--bg`) so it reads in both themes, `prefers-reduced-motion` disables the fade. The hint text lives in the content (`hint` field of skill/project tags), never in the markup.
+
+## Highlighted terms in prose
+
+- Prose fields in `src/content/` can mark a technical word with `[[term]]` (hint from the glossary) or `[[term|custom hint]]` (override). The helper `src/lib/terms.ts` (`withTerms()` + `getGlossary()`) escapes the text, then turns each marker into `<span class="term" tabindex="0" data-hint="hint">term</span>`, rendered with `set:html`. A term missing from the glossary renders as plain text.
+- **Glossary** (`src/content/site/glossary.md`, one `terms:` list): ONE definition per technical term, shared by inline `[[term]]` markers AND tech tags (skill items, project tags resolve their hint via `hintFor()`). Lookup is case- and whitespace-insensitive, so `RBAC/ABAC` and `RBAC / ABAC` are the same entry. The `.term` class (in `ui/tooltip.css`) is a discreet dotted underline in accent (45% opacity) and reuses the `data-hint` tooltip on hover/focus.
+- **h1 icons**: page titles (hero, page-header) can carry a colored accent icon next to the text (`icon` field in the site content, optional on the hero).
+- **Skills section**: 3 independent columns (a grid of flex columns, groups split into chunks by the component so mobile stacking keeps the reading order). Each column has its own height, so the horizontal alignment is broken — true masonry. Do NOT use CSS multicol (`columns`) here: it fragments overflowing content, which clips absolutely-positioned tooltips. Each group has a colored accent icon and a neutral (`--text`) title; tags are small pills (0.75rem).
+- **Section separation on inner pages**: sections alternate with a full-width `.band` (accent tint at 5% over `--bg`, in `base.css`). All sections share the same internal padding (`3rem 1.5rem`), and `.band` adds none, so banded and plain sections have identical top/bottom margins. Each section title carries a colored accent icon (`sectionIcons` in the parcours content).
+- **Icon sizing**: `icon.astro` takes `size` in `em` (default `1`), so an icon always matches the text it accompanies — h1 icons 0.75em, section titles 0.85em, inline icons 1em, small tag icons 1.2em.
+- **Project cards**: the period is always on its own line above the title (fixed format whatever the title length).
+- **Callout**: `sections/callout.astro` renders an optional `callout` field of a site page (e.g. the warning "PHP & Symfony aujourd'hui, sans on-dit" note on the home page, under the preview cards) as a left-border box (`accent` or `warning` variant); paragraphs split on empty lines; same container rhythm as sections. Terms in it use the glossary tooltips.
+- **CV lite-preview modal**: a CTA with `modal: {...}` renders as a button opening a native `<dialog class="cv-modal">`. pdf.js is lazy-loaded from the CDN only on first open (same pattern as the Google Fonts link) and renders each PDF page into a canvas inside `.cv-modal__pages` — the modal's ONLY scrollable area (dialog is `overflow: hidden`, page behind locked via `html.cv-modal-open`). Closed via ✕, Esc or backdrop click; a "open in a tab" link (labels from content) is the no-network fallback. No `download` attribute. Styles in `hero.css`.
+- Small icons also accompany the hero location (`train`) and the experience card locations (`map-pin`).
+- **Availability badge**: content from the `availability` field of `profile.md` (status `available`/`training` drives the dot color: green/amber, gentle pulse, disabled by `prefers-reduced-motion`). Two placements via the `variant` prop of `ui/availability-badge.astro`: `inline` in the hero on the home page, `floating` (fixed bottom-right, rendered by `base-layout.astro` only on non-home pages) on inner pages. Floating variant collapses to the dot alone below 40rem; the inline one always shows its text. Styles in `ui/availability-badge.css` (base rules before the media query — later rules win the cascade).
 
 ## Footer credit
 

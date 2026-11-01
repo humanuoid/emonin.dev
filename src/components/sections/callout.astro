@@ -1,0 +1,39 @@
+---
+import { getGlossary, withTerms } from '../../lib/terms';
+
+interface Props {
+  title: string;
+  text: string;
+  variant?: 'accent' | 'warning';
+  sourcesLabel?: string;
+  sources?: Array<{ href: string; label: string }>;
+}
+
+const { title, text, variant = 'accent', sourcesLabel, sources } = Astro.props;
+const glossary = await getGlossary();
+// Paragraphs are separated by empty lines in the YAML folded scalar,
+// which come through as single newlines
+const paragraphs = text.split(/\n+/).filter(Boolean);
+---
+
+<aside class="callout" aria-labelledby="callout-title">
+  <div class={`callout__box callout__box--${variant}`}>
+    <h2 id="callout-title" class="callout__title">{title}</h2>
+    {paragraphs.map((paragraph) => <p class="callout__text" set:html={withTerms(paragraph, glossary)} />)}
+    {
+      sources && (
+        <p class="callout__sources">
+          {sourcesLabel}
+          {sources.map((source, index) => (
+            <>
+              {index > 0 && ', '}
+              <a href={source.href} target="_blank" rel="noopener">
+                {source.label}
+              </a>
+            </>
+          ))}
+        </p>
+      )
+    }
+  </div>
+</aside>

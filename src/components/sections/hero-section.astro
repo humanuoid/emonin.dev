@@ -1,0 +1,162 @@
+---
+import Icon from '../ui/icon.astro';
+import AvailabilityBadge from '../ui/availability-badge.astro';
+import { getGlossary, withTerms } from '../../lib/terms';
+
+type CtaIcon = 'download' | 'mail' | 'arrow-right' | 'file-text';
+type TitleIcon = 'user' | 'compass' | 'mail';
+
+interface Cta {
+  href: string;
+  label: string;
+  icon: CtaIcon;
+  modal?: { openLabel: string; loadingLabel: string };
+}
+
+interface Hero {
+  icon?: TitleIcon;
+  eyebrow: string;
+  title: string;
+  subtitle: string;
+  location: string;
+  primaryCta: Cta;
+  secondaryCta: Cta;
+}
+
+interface Props {
+  hero: Hero;
+  availability: {
+    status: 'available' | 'training';
+    label: string;
+    period?: string;
+  };
+}
+
+const { hero, availability } = Astro.props;
+const glossary = await getGlossary();
+---
+
+<section class="hero">
+  <p class="hero__eyebrow">{hero.eyebrow}</p>
+  <h1 class="hero__title">
+    {hero.icon && <span class="hero__title-icon"><Icon name={hero.icon} size={0.75} /></span>}
+    {hero.title}
+  </h1>
+  <p class="hero__subtitle" set:html={withTerms(hero.subtitle, glossary)} />
+  <p class="hero__location">
+    <span class="hero__location-icon"><Icon name="train" /></span>
+    {hero.location}
+  </p>
+  <AvailabilityBadge availability={availability} variant="inline" />
+  <div class="hero__actions">
+    {
+      hero.primaryCta.modal ? (
+        <>
+          <button
+            type="button"
+            class="btn btn--primary"
+            data-cv-open
+            data-cv-src={hero.primaryCta.href}
+            data-cv-loading={hero.primaryCta.modal.loadingLabel}
+          >
+            <Icon name={hero.primaryCta.icon} />
+            {hero.primaryCta.label}
+          </button>
+          <dialog class="cv-modal" data-cv-modal aria-label={hero.primaryCta.label}>
+            <div class="cv-modal__bar">
+              <span class="cv-modal__title">{hero.primaryCta.label}</span>
+              <span class="cv-modal__bar-actions">
+                <a class="cv-modal__open" href={hero.primaryCta.href} target="_blank" rel="noopener">
+                  {hero.primaryCta.modal.openLabel}
+                  <Icon name="arrow-up-right" />
+                </a>
+                <button type="button" class="cv-modal__close icon-button" data-cv-close aria-label="Fermer">
+                  <Icon name="x" />
+                </button>
+              </span>
+            </div>
+            <div class="cv-modal__pages" data-cv-pages />
+          </dialog>
+          <script>
+            // CV lite preview: pdf.js is lazy-loaded from the CDN only when the modal
+            // opens first (same pattern as the Google Fonts <link>). Pages are rendered
+            // into canvases inside the modal's single scroll container — the dialog
+            // itself never scrolls, and the page behind is locked while open.
+            const openBtn = document.querySelector<HTMLButtonElement>('[data-cv-open]');
+            const modal = document.querySelector<HTMLDialogElement>('[data-cv-modal]');
+            const pagesEl = modal?.querySelector<HTMLElement>('[data-cv-pages]');
+            if (openBtn && modal && pagesEl) {
+              let pdfjsPromise: Promise<any> | null = null;
+              const loadPdfjs = () => {
+                if (!pdfjsPromise) {
+                  pdfjsPromise = new Promise((resolve, reject) => {
+                    const script = document.createElement('script');
+                    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+                    script.onload = () => resolve((window as any).pdfjsLib);
+                    script.onerror = () => reject(new Error('pdf.js failed to load'));
+                    document.head.appendChild(script);
+                  });
+                }
+                return pdfjsPromise;
+              };
+
+              const renderPdf = async () => {
+                pagesEl.textContent = openBtn.dataset.cvLoading || '';
+                try {
+                  const pdfjs = await loadPdfjs();
+                  pdfjs.GlobalWorkerOptions.workerSrc =
+                    'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+                  const pdf = await pdfjs.getDocument(openBtn.dataset.cvSrc || '').promise;
+                  pagesEl.textContent = '';
+                  const targetWidth = Math.max(pagesEl.clientWidth - 32, 300);
+                  for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
+                    const page = await pdf.getPage(pageNumber);
+                    const viewport = page.getViewport({ scale: targetWidth / page.getViewport({ scale: 1 }).width });
+                    const canvas = document.createElement('canvas');
+                    canvas.className = 'cv-modal__page';
+                    canvas.width = Math.floor(viewport.width);
+                    canvas.height = Math.floor(viewport.height);
+                    pagesEl.appendChild(canvas);
+                    await page.render({ canvasContext: canvas.getContext('2d')!, viewport }).promise;
+                  }
+                } catch {
+                  // No network / no pdf.js: fall back to a plain link to the PDF
+                  pagesEl.innerHTML = '';
+                  const link = document.createElement('a');
+                  link.href = openBtn.dataset.cvSrc || '#';
+                  link.target = '_blank';
+                  link.rel = 'noopener';
+                  link.textContent = openBtn.dataset.cvLoading || 'PDF';
+                  pagesEl.appendChild(link);
+                }
+              };
+
+              openBtn.addEventListener('click', () => {
+                modal.showModal();
+                document.documentElement.classList.add('cv-modal-open');
+                if (!pagesEl.dataset.loaded) {
+                  pagesEl.dataset.loaded = '1';
+                  renderPdf();
+                }
+              });
+              modal.querySelector('[data-cv-close]')?.addEventListener('click', () => modal.close());
+              modal.addEventListener('click', (event) => {
+                if (event.target === modal) modal.close();
+              });
+              modal.addEventListener('close', () => document.documentElement.classList.remove('cv-modal-open'));
+            }
+          </script>
+        </>
+      ) : (
+        <a href={hero.primaryCta.href} class="btn btn--primary">
+          <Icon name={hero.primaryCta.icon} />
+          {hero.primaryCta.label}
+        </a>
+      )
+    }
+    <a href={hero.secondaryCta.href} class="btn btn--ghost">
+      <Icon name={hero.secondaryCta.icon} />
+      {hero.secondaryCta.label}
+    </a>
+  </div>
+</section>

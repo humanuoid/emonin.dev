@@ -1,0 +1,56 @@
+/* Tooltip for any element carrying data-hint (tech tags on skills and project cards).
+   Pure CSS: appears on hover and on keyboard focus (tags are tabindex="0", so a tap
+   on mobile focuses them too). The tooltip is inverted (text/bg swapped) so it stays
+   readable in both themes. */
+[data-hint] {
+  position: relative;
+}
+
+[data-hint]::after {
+  content: attr(data-hint);
+  position: absolute;
+  bottom: calc(100% + 0.4rem);
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: 14rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: var(--radius);
+  background: var(--text);
+  color: var(--bg);
+  font-size: 0.78rem;
+  line-height: 1.35;
+  text-align: center;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 0.15s ease,
+    visibility 0.15s ease;
+  z-index: 10;
+}
+
+[data-hint]:hover::after,
+[data-hint]:focus::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-hint]::after {
+    transition: none;
+  }
+}
+
+/* Technical term in prose ([[term|hint]] syntax, see src/lib/terms.ts):
+   dotted underline in accent color. Reuses the [data-hint] tooltip above,
+   shown on hover or keyboard focus. */
+.term {
+  color: var(--accent);
+  font-weight: 500;
+  text-decoration: underline dotted;
+  text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  cursor: help;
+}

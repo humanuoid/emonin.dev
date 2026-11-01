@@ -1,0 +1,57 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Icon from '../ui/icon.astro';
+import { getGlossary, withTerms, hintFor } from '../../lib/terms';
+
+interface Props {
+  project: CollectionEntry<'projects'>['data'];
+  linkLabels: { demo: string; code: string };
+}
+
+const { project, linkLabels } = Astro.props;
+const { title, description, period, tags, links } = project;
+const glossary = await getGlossary();
+---
+
+<article class="project-card">
+  <div class="project-card__heading">
+    {
+      period && (
+        <span class="project-card__period">
+          <Icon name="calendar" />
+          {period}
+        </span>
+      )
+    }
+    <h3 class="project-card__title">{title}</h3>
+  </div>
+  <p class="project-card__description" set:html={withTerms(description, glossary)} />
+  <ul class="project-card__tags">
+    {tags.map((tag) => {
+      const hint = hintFor(tag, glossary);
+      return hint ? (
+        <li class="project-card__tag" tabindex="0" data-hint={hint}>
+          {tag}
+        </li>
+      ) : (
+        <li class="project-card__tag">{tag}</li>
+      );
+    })}
+  </ul>
+  {
+    links && (links.demo || links.code) && (
+      <div class="project-card__links">
+        {links.demo && (
+          <a href={links.demo} class="project-card__link" target="_blank" rel="noopener">
+            {linkLabels.demo} <Icon name="arrow-up-right" />
+          </a>
+        )}
+        {links.code && (
+          <a href={links.code} class="project-card__link" target="_blank" rel="noopener">
+            {linkLabels.code} <Icon name="arrow-up-right" />
+          </a>
+        )}
+      </div>
+    )
+  }
+</article>

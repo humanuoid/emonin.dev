@@ -1,19 +1,37 @@
 ---
+import { getEntry } from 'astro:content';
 import BaseLayout from '../layouts/base-layout.astro';
-import SiteHeader from '../components/site-header.astro';
-import HeroSection from '../components/hero-section.astro';
-import PreviewSection from '../components/preview-section.astro';
-import SiteFooter from '../components/site-footer.astro';
+import SiteHeader from '../components/layout/site-header.astro';
+import HeroSection from '../components/sections/hero-section.astro';
+import PreviewSection from '../components/sections/preview-section.astro';
+import Callout from '../components/sections/callout.astro';
+import SiteFooter from '../components/layout/site-footer.astro';
+
+const profile = await getEntry('site', 'profile');
+const home = await getEntry('site', 'home');
+if (!profile || profile.data.kind !== 'profile') throw new Error('Missing or invalid src/content/site/profile.md');
+if (!home || home.data.kind !== 'home') throw new Error('Missing or invalid src/content/site/home.md');
 ---
 
 <BaseLayout
-  title="Emmanuel Monin — Développeur web"
-  description="Portfolio d'Emmanuel Monin, développeur web. Découvrez mes compétences, mes projets et comment me contacter."
+  title={`${profile.data.name} · ${profile.data.headline}`}
+  description={profile.data.baseline}
 >
-  <SiteHeader />
+  <SiteHeader brand={profile.data.brand} nav={profile.data.nav} />
   <main>
-    <HeroSection />
-    <PreviewSection />
+    <HeroSection hero={home.data.hero} availability={profile.data.availability} />
+    <PreviewSection preview={home.data.preview} />
+    {
+      home.data.callout && (
+        <Callout
+          title={home.data.callout.title}
+          text={home.data.callout.text}
+          variant={home.data.callout.variant ?? 'accent'}
+          sourcesLabel={home.data.callout.sourcesLabel}
+          sources={home.data.callout.sources}
+        />
+      )
+    }
   </main>
-  <SiteFooter />
+  <SiteFooter name={profile.data.name} credit={profile.data.credit} socials={profile.data.socials} />
 </BaseLayout>

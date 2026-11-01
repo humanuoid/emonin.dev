@@ -1,0 +1,135 @@
+/* Hero section — BEM block "hero" (buttons live in buttons.css) */
+.hero {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 6rem 1.5rem 3rem;
+}
+
+.hero__eyebrow {
+  color: var(--accent);
+  font-weight: 500;
+  font-size: 1.05rem;
+  margin-bottom: 0.5rem;
+}
+
+.hero__title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: clamp(2.5rem, 6vw, 3.5rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+
+.hero__title-icon {
+  display: inline-flex;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.hero__subtitle {
+  color: var(--muted);
+  font-size: 1.125rem;
+  max-width: 34rem;
+  margin-bottom: 0.5rem;
+}
+
+.hero__location {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin-bottom: 2rem;
+}
+
+.hero__location-icon {
+  display: inline-flex;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+/* CV lite-preview modal (native <dialog>). The dialog itself NEVER scrolls
+   (overflow hidden, fixed height, flex column): the only scrollable area is
+   .cv-modal__pages, and the page behind is locked while open (html.cv-modal-open). */
+.cv-modal {
+  margin: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  width: min(56rem, 92vw);
+  height: min(80vh, 60rem);
+  padding: 0;
+  overflow: hidden;
+}
+
+.cv-modal[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+.cv-modal::backdrop {
+  background: rgb(0 0 0 / 0.5);
+}
+
+.cv-modal__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.cv-modal__title {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.cv-modal__bar-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.cv-modal__open {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.85rem;
+}
+
+/* The single scroll container of the modal */
+.cv-modal__pages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.cv-modal__page {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: #fff;
+}
+
+/* Lock the page scroll while the modal is open */
+html.cv-modal-open,
+html.cv-modal-open body {
+  overflow: hidden;
+}
+
+.hero__actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}

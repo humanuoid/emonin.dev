@@ -1,5 +1,19 @@
 ---
-import Icon from './icon.astro';
+import Icon from '../ui/icon.astro';
+
+interface FormLabels {
+  nameLabel: string;
+  emailLabel: string;
+  messageLabel: string;
+  submitLabel: string;
+  notice: string;
+}
+
+interface Props {
+  form: FormLabels;
+}
+
+const { form } = Astro.props;
 
 // Static-friendly contact form via Web3Forms (https://web3forms.com).
 // The access key NEVER lives in the repo or in this file: it is inlined at
@@ -25,7 +39,7 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY as string | undefi
       />
 
       <div class="contact-form__field">
-        <label class="contact-form__label" for="contact-name">Nom</label>
+        <label class="contact-form__label" for="contact-name">{form.nameLabel}</label>
         <input
           class="contact-form__input"
           type="text"
@@ -37,7 +51,7 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY as string | undefi
       </div>
 
       <div class="contact-form__field">
-        <label class="contact-form__label" for="contact-email">E-mail</label>
+        <label class="contact-form__label" for="contact-email">{form.emailLabel}</label>
         <input
           class="contact-form__input"
           type="email"
@@ -49,7 +63,7 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY as string | undefi
       </div>
 
       <div class="contact-form__field">
-        <label class="contact-form__label" for="contact-message">Message</label>
+        <label class="contact-form__label" for="contact-message">{form.messageLabel}</label>
         <textarea
           class="contact-form__input contact-form__input--area"
           id="contact-message"
@@ -59,14 +73,11 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY as string | undefi
       </div>
 
       <button class="btn btn--primary contact-form__submit" type="submit">
-        Envoyer le message
-        <Icon name="send" size={16} />
+        {form.submitLabel}
+        <Icon name="send" />
       </button>
     </form>
   ) : (
-    <p class="contact-form__notice">
-      Le formulaire n'est pas configuré : la variable d'environnement
-      PUBLIC_WEB3FORMS_ACCESS_KEY est absente de ce build.
-    </p>
+    <p class="contact-form__notice">{form.notice}</p>
   )
 }

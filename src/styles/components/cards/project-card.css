@@ -1,28 +1,4 @@
-/* Projects grid + project card — BEM blocks "projects" and "project-card" */
-.projects {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 0 1.5rem 4rem;
-}
-
-.projects__title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  margin-bottom: 1.25rem;
-}
-
-.projects__grid {
-  display: grid;
-  gap: 1.25rem;
-}
-
-@media (min-width: 40rem) {
-  .projects__grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
+/* Project card — BEM block "project-card" (the grid lives in sections/projects-section.css) */
 .project-card {
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -43,10 +19,29 @@
   box-shadow: 0 2px 6px -2px rgb(0 0 0 / 0.08);
 }
 
+/* Period always on its own line above the title: the card header keeps the same
+   format whatever the title length */
+.project-card__heading {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15rem;
+}
+
 .project-card__title {
   font-size: 1.1rem;
   font-weight: 600;
   letter-spacing: -0.01em;
+}
+
+.project-card__period {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  color: var(--accent);
+  font-weight: 500;
+  white-space: nowrap;
 }
 
 .project-card__description {
@@ -66,9 +61,10 @@
 .project-card__tag {
   border: 1px solid var(--border);
   border-radius: 999px;
-  padding: 0.15rem 0.6rem;
-  font-size: 0.8rem;
+  padding: 0.08rem 0.5rem;
+  font-size: 0.75rem;
   color: var(--muted);
+  cursor: help;
 }
 
 .project-card__links {

@@ -1,0 +1,122 @@
+/* Availability badge — ONE format in both variants (inline in the hero,
+   floating fixed bottom-right on inner pages): same pill shape (999px),
+   same padding when the text is shown. Only difference: the floating variant
+   collapses to the dot alone below 40rem (mobile-first base), the inline one
+   always shows its text.
+   Dot color comes from the status: green = available, amber = training. */
+.availability-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  padding: 0.45rem; /* collapsed base (floating on mobile) */
+  font-size: 0.85rem;
+}
+
+.availability-badge__text {
+  display: none;
+}
+
+.availability-badge--inline {
+  padding: 0.5rem 1.05rem;
+  margin-bottom: 1.5rem;
+  box-shadow: none;
+}
+
+.availability-badge--inline .availability-badge__text {
+  display: inline-flex;
+  flex-direction: column;
+  line-height: 1.3;
+}
+
+.availability-badge--floating {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 20;
+  box-shadow: 0 4px 14px -4px rgb(0 0 0 / 0.18);
+}
+
+@media (min-width: 40rem) {
+  .availability-badge--floating {
+    padding: 0.5rem 1.05rem; /* identical to the inline variant */
+  }
+
+  .availability-badge--floating .availability-badge__text {
+    display: inline-flex;
+    flex-direction: column;
+    line-height: 1.3;
+  }
+}
+
+.availability-badge__period {
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.availability-badge__dot {
+  position: relative;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: #22c55e; /* available */
+  flex-shrink: 0;
+}
+
+.availability-badge--training .availability-badge__dot {
+  background: #f59e0b; /* training */
+}
+
+.availability-badge__dot::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 1px solid #22c55e;
+  opacity: 0.7;
+  animation: availability-badge-pulse 2s ease-out infinite;
+}
+
+.availability-badge--training .availability-badge__dot::after {
+  border-color: #f59e0b;
+}
+
+@keyframes availability-badge-pulse {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.7;
+  }
+  70% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .availability-badge__dot::after {
+    animation: none;
+  }
+}
+
+/* The floating badge overlaps the bottom-right corner: reserve space under the
+   footer so the social links stay reachable (only on pages showing the badge) */
+.has-floating-badge .footer {
+  padding-bottom: 4rem;
+}
+
+/* Flat dark theme: no elevation shadow */
+:root[data-theme='dark'] .availability-badge--floating {
+  box-shadow: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .availability-badge--floating {
+    box-shadow: none;
+  }
+}

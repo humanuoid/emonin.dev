@@ -1,0 +1,24 @@
+---
+interface Props {
+  availability: {
+    status: 'available' | 'training';
+    label: string;
+    period?: string;
+  };
+  variant?: 'floating' | 'inline';
+}
+
+const { availability, variant = 'floating' } = Astro.props;
+---
+
+<!-- Availability badge: floating (fixed bottom-right, non-home pages) or inline
+     (in the hero). Collapsed to a dot alone on small screens when floating. -->
+<div
+  class={`availability-badge availability-badge--${availability.status} availability-badge--${variant}`}
+>
+  <span class="availability-badge__dot" aria-hidden="true"></span>
+  <span class="availability-badge__text">
+    <span class="availability-badge__label">{availability.label}</span>
+    {availability.period && <span class="availability-badge__period">{availability.period}</span>}
+  </span>
+</div>
