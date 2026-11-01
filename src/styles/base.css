@@ -8,6 +8,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: clip; /* guard against accidental horizontal overflow (keeps sticky working) */
 }
 
 body {
@@ -16,6 +17,15 @@ body {
   color: var(--text);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  /* Sticky footer: the page is a column filling the viewport, main grows,
+     so the footer always sits at the bottom — never floating mid-page */
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+main {
+  flex: 1;
 }
 
 a {
@@ -27,8 +37,8 @@ a:hover {
   color: var(--accent-hover);
 }
 
-/* Animated underline on text links (excludes buttons, brand, nav links, icon-only links) */
-a:not(.btn):not(.header__brand):not(.header__link):not(.footer__social-link) {
+/* Animated underline on text links (excludes buttons, brand, nav links, icon-only links, TOC links) */
+a:not(.btn):not(.header__brand):not(.header__link):not(.footer__social-link):not(.page-toc__link) {
   padding-bottom: 2px;
   background-image: linear-gradient(currentColor, currentColor);
   background-size: 0% 1px;
@@ -39,7 +49,7 @@ a:not(.btn):not(.header__brand):not(.header__link):not(.footer__social-link) {
     color 0.15s ease;
 }
 
-a:not(.btn):not(.header__brand):not(.header__link):not(.footer__social-link):hover {
+a:not(.btn):not(.header__brand):not(.header__link):not(.footer__social-link):not(.page-toc__link):hover {
   background-size: 100% 1px;
 }
 
@@ -48,7 +58,19 @@ img {
   display: block;
 }
 
-/* Full-width alternating band to visually separate sections on inner pages */
+/* Visible focus ring for keyboard users */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Anchor targets sit clear of the header when jumped to from the page TOC */
+section[id] {
+  scroll-margin-top: 5rem;
+}
+
+/* Full-width alternating band to visually separate sections on inner pages
+   (color lives in the --band-bg token, also used by the logo center layer) */
 .band {
-  background: color-mix(in srgb, var(--accent) 5%, var(--bg));
+  background: var(--band-bg);
 }

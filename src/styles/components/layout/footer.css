@@ -1,6 +1,8 @@
-/* Site footer — BEM block "footer" */
+/* Site footer — BEM block "footer".
+   White (surface) background and a 3px top border, matching the header. */
 .footer {
-  border-top: 1px solid var(--border);
+  background: var(--surface);
+  border-top: var(--nav-underline) solid var(--border);
   margin-top: 4rem;
 }
 
