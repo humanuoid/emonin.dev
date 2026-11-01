@@ -3,6 +3,7 @@ import { getCollection, getEntry } from 'astro:content';
 import BaseLayout from '../layouts/base-layout.astro';
 import SiteHeader from '../components/layout/site-header.astro';
 import PageHeader from '../components/layout/page-header.astro';
+// PageToc disabled for v1 (will come back later): component + toc content + section ids are kept
 import SkillsSection from '../components/sections/skills-section.astro';
 import ExperienceSection from '../components/sections/experience-section.astro';
 import ProjectsSection from '../components/sections/projects-section.astro';
@@ -27,9 +28,10 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
   <main>
     <PageHeader icon={page.data.icon} title={page.data.title} intro={page.data.intro} />
     <div class="band">
-      <SkillsSection icon={page.data.sectionIcons.skills} title={page.data.titles.skills} groups={skills.map((s) => s.data)} />
+      <SkillsSection id="competences" icon={page.data.sectionIcons.skills} title={page.data.titles.skills} groups={skills.map((s) => s.data)} />
     </div>
     <ExperienceSection
+      id="experience"
       icon={page.data.sectionIcons.experience}
       title={page.data.titles.experience}
       educationTitle={page.data.titles.education}
@@ -37,6 +39,7 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
     />
     <div class="band">
       <ProjectsSection
+        id="projets"
         icon={page.data.sectionIcons.projects}
         title={page.data.titles.projects}
         linkLabels={page.data.projectLinkLabels}
@@ -44,6 +47,7 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
       />
     </div>
     <ValuesSection
+      id="valeurs"
       icon={page.data.sectionIcons.values}
       title={page.data.titles.values}
       values={page.data.values}
