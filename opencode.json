@@ -3,5 +3,11 @@
   "instructions": [
     "AGENTS.md",
     "aidd_docs/memory/*.md"
-  ]
+  ],
+  "lsp": {
+    "astro": {
+      "command": ["./node_modules/.bin/astro-ls", "--stdio"],
+      "extensions": [".astro"]
+    }
+  }
 }
