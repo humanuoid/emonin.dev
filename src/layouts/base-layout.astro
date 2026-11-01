@@ -23,8 +23,77 @@ const { title, description } = Astro.props;
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    <script is:inline>
+      // Apply the saved theme before first paint (no flash). With nothing saved,
+      // the CSS media query keeps the site on the system preference.
+      try {
+        var savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light' || savedTheme === 'dark') {
+          document.documentElement.dataset.theme = savedTheme;
+        }
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <slot />
+    <script is:inline>
+      // Theme switch: flips the effective theme, persists the explicit choice, keeps aria-checked in sync.
+      function effectiveTheme() {
+        var root = document.documentElement;
+        return (
+          root.dataset.theme ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+        );
+      }
+      document.querySelectorAll('[data-theme-toggle]').forEach(function (btn) {
+        btn.setAttribute('aria-checked', effectiveTheme() === 'dark' ? 'true' : 'false');
+        btn.addEventListener('click', function () {
+          var next = effectiveTheme() === 'dark' ? 'light' : 'dark';
+          document.documentElement.dataset.theme = next;
+          btn.setAttribute('aria-checked', next === 'dark' ? 'true' : 'false');
+          try {
+            localStorage.setItem('theme', next);
+          } catch (e) {}
+        });
+      });
+
+      // Header nav: the shared pill slides to the hovered/focused link and
+      // rests on the active one. Without JS the per-link :hover pill remains.
+      var navList = document.querySelector('.header__links');
+      if (navList) {
+        var pill = navList.querySelector('.header__pill');
+        var navLinks = Array.prototype.slice.call(navList.querySelectorAll('.header__link'));
+        var activeLink = navList.querySelector('.header__link--active') || navLinks[0];
+        function movePill(link, isHover) {
+          pill.style.left = link.offsetLeft + 'px';
+          pill.style.width = link.offsetWidth + 'px';
+          pill.classList.toggle('header__pill--hover', !!isHover);
+        }
+        function snapPill() {
+          pill.style.transition = 'none';
+          movePill(activeLink, false);
+          requestAnimationFrame(function () {
+            pill.style.transition = '';
+          });
+        }
+        navList.classList.add('header__links--animated');
+        navLinks.forEach(function (link) {
+          link.addEventListener('mouseenter', function () {
+            movePill(link, link !== activeLink);
+          });
+          link.addEventListener('focus', function () {
+            movePill(link, link !== activeLink);
+          });
+        });
+        navList.addEventListener('mouseleave', function () {
+          movePill(activeLink, false);
+        });
+        navList.addEventListener('focusout', function () {
+          movePill(activeLink, false);
+        });
+        window.addEventListener('resize', snapPill);
+        snapPill();
+      }
+    </script>
   </body>
 </html>

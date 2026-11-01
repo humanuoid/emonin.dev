@@ -26,6 +26,11 @@
   gap: 0.3rem;
   vertical-align: -2px;
   margin-left: 0.25rem; /* keeps a space before the link even in minified HTML */
+  color: var(--mistral); /* Mistral brand orange, independent from --accent */
+}
+
+.footer__credit:hover {
+  color: var(--mistral-hover);
 }
 
 .footer__socials {
@@ -35,12 +40,5 @@
   padding: 0;
 }
 
-.footer__social-link {
-  color: var(--muted);
-  display: inline-flex;
-  transition: color 0.15s ease;
-}
-
-.footer__social-link:hover {
-  color: var(--accent);
-}
+/* .footer__social-link uses the shared circular .icon-button look (icon-button.css),
+   same appearance as the header theme switch. */

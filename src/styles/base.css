@@ -27,8 +27,8 @@ a:hover {
   color: var(--accent-hover);
 }
 
-/* Animated underline on text links (excludes buttons, brand, icon-only links) */
-a:not(.btn):not(.header__brand):not(.footer__social-link) {
+/* Animated underline on text links (excludes buttons, brand, nav links, icon-only links) */
+a:not(.btn):not(.header__brand):not(.header__link):not(.footer__social-link) {
   padding-bottom: 2px;
   background-image: linear-gradient(currentColor, currentColor);
   background-size: 0% 1px;
@@ -39,7 +39,7 @@ a:not(.btn):not(.header__brand):not(.footer__social-link) {
     color 0.15s ease;
 }
 
-a:not(.btn):not(.header__brand):not(.footer__social-link):hover {
+a:not(.btn):not(.header__brand):not(.header__link):not(.footer__social-link):hover {
   background-size: 100% 1px;
 }
 

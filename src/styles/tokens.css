@@ -1,5 +1,6 @@
-/* Design tokens — light theme by default, dark via prefers-color-scheme */
+/* Design tokens — light by default, dark via prefers-color-scheme or an explicit [data-theme] */
 :root {
+  color-scheme: light;
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
 
   --bg: #fcfcfc;
@@ -8,24 +9,80 @@
   --muted: #6b7280;
   --border: #e8e8ea;
 
-  --accent: #fa520f; /* Mistral orange */
-  --accent-hover: #e04a0c;
+  --accent: #6266bc; /* softened mauve, PHP #777bb4 hue (S≈40%) */
+  --accent-hover: #5559a3;
   --accent-contrast: #ffffff;
 
+  /* Mistral brand orange — kept for the footer credit only */
+  --mistral: #fa520f;
+  --mistral-hover: #e04a0c;
+
   --radius: 0.5rem;
+  --radius-lg: 0.9rem;
   --max-width: 56rem;
+
+  /* Elevation shadows — light theme only, the dark theme is flat */
+  --header-shadow: 0 1px 3px rgb(0 0 0 / 0.06);
+  --shadow-btn: 0 4px 14px -2px rgb(0 0 0 / 0.12), inset 0 1px 0 rgb(255 255 255 / 0.2);
+  --shadow-btn-hover: 0 6px 18px -2px rgb(0 0 0 / 0.16), inset 0 1px 0 rgb(255 255 255 / 0.2);
+  --shadow-btn-active: 0 2px 6px -2px rgb(0 0 0 / 0.1);
+  --shadow-ghost: 0 1px 2px rgb(0 0 0 / 0.04);
+  --shadow-ghost-hover: 0 2px 6px -2px rgb(0 0 0 / 0.08);
+  --shadow-ghost-active: 0 1px 1px rgb(0 0 0 / 0.03);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0a0a0b;
-    --surface: #131315;
-    --text: #ededed;
-    --muted: #9ca3af;
-    --border: #26262a;
+/* Dark tokens when the header switch explicitly picked dark.
+   Keep in sync with the prefers-color-scheme block below. */
+:root[data-theme='dark'] {
+  color-scheme: dark;
 
-    --accent: #ff8205;
-    --accent-hover: #ffa94d;
-    --accent-contrast: #3d0c00;
+  --bg: #000000;
+  --surface: #1b1b21; /* a notch lighter than --bg so buttons and cards stand out */
+  --text: #ffffff; /* lighter main text for better contrast */
+  --muted: #a8a8b3;
+  --border: #2e2e33;
+
+  --accent: #a78bfa; /* electric violet */
+  --accent-hover: #c4b5fd;
+  --accent-contrast: #2e1065;
+
+  --mistral: #ff8205;
+  --mistral-hover: #ffa94d;
+
+  /* Flat dark theme: no elevation shadows */
+  --header-shadow: none;
+  --shadow-btn: none;
+  --shadow-btn-hover: none;
+  --shadow-btn-active: none;
+  --shadow-ghost: none;
+  --shadow-ghost-hover: none;
+  --shadow-ghost-active: none;
+}
+
+/* System dark theme, unless the switch explicitly picked light */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+
+    --bg: #000000;
+    --surface: #1b1b21;
+    --text: #ffffff;
+    --muted: #a8a8b3;
+    --border: #2e2e33;
+
+    --accent: #a78bfa;
+    --accent-hover: #c4b5fd;
+    --accent-contrast: #2e1065;
+
+    --mistral: #ff8205;
+    --mistral-hover: #ffa94d;
+
+    --header-shadow: none;
+    --shadow-btn: none;
+    --shadow-btn-hover: none;
+    --shadow-btn-active: none;
+    --shadow-ghost: none;
+    --shadow-ghost-hover: none;
+    --shadow-ghost-active: none;
   }
 }
