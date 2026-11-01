@@ -1,4 +1,4 @@
-/* Hero section — BEM block "hero", buttons as "btn" block */
+/* Hero section — BEM block "hero" (buttons live in buttons.css) */
 .hero {
   max-width: var(--max-width);
   margin: 0 auto;
@@ -31,62 +31,4 @@
   display: flex;
   gap: 0.75rem;
   flex-wrap: wrap;
-}
-
-.btn {
-  display: inline-block;
-  padding: 0.625rem 1.25rem;
-  border-radius: var(--radius);
-  font-weight: 500;
-  font-size: 0.95rem;
-  transition:
-    background 0.15s ease,
-    color 0.15s ease,
-    border-color 0.15s ease,
-    box-shadow 0.15s ease,
-    transform 0.15s ease;
-}
-
-/* Primary button: very light neutral shadow + inner top highlight.
-   Hover lifts the button by 1px, active presses it back down —
-   shadow differences between states are intentionally subtle. */
-.btn--primary {
-  background: var(--accent);
-  color: var(--accent-contrast);
-  box-shadow:
-    0 1px 2px rgb(0 0 0 / 0.05),
-    inset 0 1px 0 rgb(255 255 255 / 0.15);
-}
-
-.btn--primary:hover {
-  background: var(--accent-hover);
-  color: var(--accent-contrast);
-  transform: translateY(-1px);
-  box-shadow:
-    0 1px 3px rgb(0 0 0 / 0.07),
-    inset 0 1px 0 rgb(255 255 255 / 0.15);
-}
-
-.btn--primary:active {
-  transform: translateY(0);
-  box-shadow: 0 1px 1px rgb(0 0 0 / 0.04);
-}
-
-.btn--ghost {
-  border: 1px solid var(--border);
-  color: var(--text);
-  background: var(--surface);
-  box-shadow: 0 1px 2px rgb(0 0 0 / 0.04);
-}
-
-.btn--ghost:hover {
-  border-color: var(--muted);
-  color: var(--text);
-  transform: translateY(-1px);
-  box-shadow: 0 2px 6px -2px rgb(0 0 0 / 0.08);
-}
-
-.btn--ghost:active {
-  transform: translateY(0);
-  box-shadow: 0 1px 1px rgb(0 0 0 / 0.03);
 }

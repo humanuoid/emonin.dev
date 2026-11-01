@@ -1,15 +1,22 @@
-/* Site header — BEM block "header" */
+/* Site header — BEM block "header".
+   Surface background + bottom border; the shadow is a token so the dark theme stays flat.
+   Mobile-first: on small screens the brand is on its own row and the links + switch
+   share a second row; from 40rem up everything sits on a single row. */
 .header {
+  background: var(--surface);
   border-bottom: 1px solid var(--border);
+  box-shadow: var(--header-shadow);
 }
 
 .header__nav {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 1rem 1.5rem;
+  padding: 0.75rem 1.5rem;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
+  gap: 0.5rem 1rem;
 }
 
 .header__brand {
@@ -22,16 +29,72 @@
   color: var(--accent);
 }
 
-.header__links {
+.header__right {
   display: flex;
-  gap: 1.5rem;
-  list-style: none;
-  padding: 0;
-  font-size: 0.925rem;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 0.75rem;
+  width: 100%;
 }
 
+.header__links {
+  position: relative;
+  display: flex;
+  gap: 0.25rem;
+  list-style: none;
+  padding: 0;
+  font-size: 0.875rem;
+}
+
+/* The pill li is transparent to the flex layout; the pill itself is
+   absolutely positioned relative to the list */
+.header__pill-li {
+  display: contents;
+}
+
+/* Shared sliding pill — only visible when JS enables the animated mode.
+   Without JS, each link keeps its own static :hover pill (fallback). */
+.header__pill {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 15%, transparent);
+  transition:
+    left 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    width 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.2s ease;
+  pointer-events: none;
+}
+
+.header__links--animated .header__pill {
+  display: block;
+}
+
+/* In animated mode the shared pill carries the background, not the links */
+.header__links--animated .header__link,
+.header__links--animated .header__link:hover,
+.header__links--animated .header__link--active,
+.header__links--animated .header__link--active:hover {
+  background: none;
+}
+
+/* Pill resting on a non-active hovered link: neutral tint instead of accent */
+.header__links--animated .header__pill--hover {
+  background: color-mix(in srgb, var(--muted) 14%, transparent);
+}
+
+/* Nav links use a soft pill instead of the animated underline (see base.css) */
 .header__link {
+  position: relative;
+  z-index: 1;
   color: var(--muted);
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
   transition: color 0.15s ease;
 }
 
@@ -45,5 +108,30 @@
 }
 
 .header__link--active:hover {
-  color: var(--accent-hover);
+  color: var(--accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header__pill {
+    transition: none;
+  }
+}
+
+/* Wider screens: single-row header, slightly larger nav */
+@media (min-width: 40rem) {
+  .header__nav {
+    flex-wrap: nowrap;
+    padding: 1rem 1.5rem;
+  }
+
+  .header__right {
+    width: auto;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    gap: 1.25rem;
+  }
+
+  .header__links {
+    font-size: 0.925rem;
+  }
 }

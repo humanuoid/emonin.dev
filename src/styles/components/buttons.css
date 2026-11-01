@@ -1,0 +1,68 @@
+/* Buttons — BEM block "btn". Sizes: btn--sm, default md, btn--lg.
+   Shadows come from tokens (--shadow-*) so the dark theme can be flat. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-lg);
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
+}
+
+.btn--sm {
+  padding: 0.4rem 0.85rem;
+  font-size: 0.875rem;
+}
+
+.btn--lg {
+  padding: 0.8rem 1.6rem;
+  font-size: 1rem;
+}
+
+/* Primary: accent gradient. Hover lifts the button 1px, active presses it back down. */
+.btn--primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+  color: var(--accent-contrast);
+  box-shadow: var(--shadow-btn);
+}
+
+.btn--primary:hover {
+  color: var(--accent-contrast);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-btn-hover);
+}
+
+.btn--primary:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-btn-active);
+}
+
+/* Ghost: quiet secondary action, surface background with a thin border */
+.btn--ghost {
+  border-color: var(--border);
+  color: var(--text);
+  background: var(--surface);
+  box-shadow: var(--shadow-ghost);
+}
+
+.btn--ghost:hover {
+  border-color: var(--muted);
+  color: var(--text);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-ghost-hover);
+}
+
+.btn--ghost:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-ghost-active);
+}
