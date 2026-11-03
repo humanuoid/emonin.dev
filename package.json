@@ -2,7 +2,7 @@
   "name": "emonin-dev",
   "description": "Personal portfolio of Emmanuel Monin — Astro static site deployed on emonin.dev",
   "type": "module",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "engines": {
     "node": ">=22.23.4"
   },
