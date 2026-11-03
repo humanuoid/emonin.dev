@@ -27,4 +27,4 @@ The terms a contributor must know to read the code.
 - Contact form on `/contact` via Web3Forms + hCaptcha (keys from build-time env only, never in the repo)
 - Blog articles from Markdown via Content Collections
 - Syntax highlighting with Shiki (built into Astro)
-- Automatic deployment to GitHub Pages on push to `main` (planned, not wired yet)
+- Automatic deployment to GitHub Pages on push to `main`, each publication followed by a new GitHub release (semver, see `aidd_docs/memory/vcs.md`)

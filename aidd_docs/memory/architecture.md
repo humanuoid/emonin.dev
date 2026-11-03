@@ -6,7 +6,7 @@ The macro technical shape: the stack, how the pieces fit, and the decisions behi
 
 - Astro as the static site generator; content in Markdown; no client-side JS framework.
 - Shiki (native to Astro) for syntax highlighting — no extra highlighting library.
-- Deployment target: GitHub Pages via GitHub Actions on `main` (planned).
+- Deployment target: GitHub Pages via GitHub Actions on `main` (wired: `.github/workflows/deploy.yml`). Each push to `main` is also followed by a new GitHub release (semver tag + notes, see `vcs.md`).
 
 ## How it fits together
 
@@ -28,6 +28,6 @@ flowchart LR
 
 ## Gotchas
 
-- Never push to `main` without a local `npm run build` passing first (once deployment is wired).
+- Never push to `main` without a local `npm run build` passing first (deployment is wired).
 - Do not modify an article published more than 48 h ago without an `updated` frontmatter field or an in-text note.
 - Article slugs: no accents, no spaces, ISO date prefix (e.g. `2026-11-30-pipeline-bdpm.md`).
