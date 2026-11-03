@@ -21,9 +21,9 @@ const { form } = Astro.props;
 // from the environment only — local .env (git-ignored) in dev, GitHub Actions
 // secrets in prod. When a variable is missing, the related element is not rendered.
 const accessKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY as string | undefined;
-// hCaptcha SITE key is public by design (rendered in the page). The SECRET key is
-// never needed here: Web3Forms verifies the captcha token server-side.
-const hcaptchaSiteKey = import.meta.env.PUBLIC_HCAPTCHA_SITE_KEY as string | undefined;
+// Spam protection uses Web3Forms' own zero-config hCaptcha (free plan): a custom
+// hCaptcha sitekey is only verifiable server-side by Web3Forms on paid plans.
+// Debug trace: aidd_docs/tasks/2026_11/2026_11_03_debug-contact-hcaptcha/
 ---
 
 {
@@ -89,11 +89,9 @@ const hcaptchaSiteKey = import.meta.env.PUBLIC_HCAPTCHA_SITE_KEY as string | und
         </label>
       </div>
 
-      {hcaptchaSiteKey && (
-        <div class="contact-form__captcha">
-          <div class="h-captcha" data-sitekey={hcaptchaSiteKey} />
-        </div>
-      )}
+      <div class="contact-form__captcha">
+        <div class="h-captcha" data-captcha="true" />
+      </div>
 
       <button class="btn btn--primary contact-form__submit" type="submit">
         {form.submitLabel}
@@ -105,8 +103,8 @@ const hcaptchaSiteKey = import.meta.env.PUBLIC_HCAPTCHA_SITE_KEY as string | und
   )
 }
 {
-  hcaptchaSiteKey && accessKey && (
-    <script is:inline src="https://js.hcaptcha.com/1/api.js" async defer></script>
+  accessKey && (
+    <script is:inline src="https://web3forms.com/client/script.js" async defer></script>
   )
 }
 <script>
@@ -114,4 +112,12 @@ const hcaptchaSiteKey = import.meta.env.PUBLIC_HCAPTCHA_SITE_KEY as string | und
   // current origin, so the same build works on localhost and on emonin.dev.
   const redirectField = document.querySelector<HTMLInputElement>('input[name="redirect"]');
   if (redirectField) redirectField.value = `${location.origin}/contact?sent=1`;
+
+  // Native POST: block the submit while the hCaptcha is unsolved, instead of
+  // landing on the Web3Forms error page (client-side guard from Web3Forms docs).
+  const form = document.querySelector<HTMLFormElement>('.contact-form');
+  form?.addEventListener('submit', (event) => {
+    const token = form.querySelector<HTMLTextAreaElement>('textarea[name="h-captcha-response"]');
+    if (token && !token.value) event.preventDefault();
+  });
 </script>
