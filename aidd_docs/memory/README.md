@@ -17,16 +17,16 @@ The root files load every session through the project memory block in each AI co
 Refreshed automatically by the memory hook. Do not edit by hand.
 
 <!-- files:start -->
-- `architecture.md`
-- `codebase-map.md`
-- `coding-assertions.md`
-- `design.md`
-- `ecosystem.md`
-- `forms.md`
-- `navigation.md`
-- `project-brief.md`
-- `testing.md`
-- `vcs.md`
+- [architecture.md](architecture.md)
+- [codebase-map.md](codebase-map.md)
+- [coding-assertions.md](coding-assertions.md)
+- [design.md](design.md)
+- [ecosystem.md](ecosystem.md)
+- [forms.md](forms.md)
+- [navigation.md](navigation.md)
+- [project-brief.md](project-brief.md)
+- [testing.md](testing.md)
+- [vcs.md](vcs.md)
 <!-- files:end -->
 
 ## Maintaining it

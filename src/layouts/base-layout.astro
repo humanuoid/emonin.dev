@@ -21,6 +21,13 @@ const showFloatingBadge = pathname !== '/';
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
+    <!-- GitHub Pages sends no custom HTTP headers, so a meta tag is the only CSP channel.
+         'unsafe-inline' for scripts covers the is:inline scripts below and in pages; no
+         untrusted input is rendered (content comes from repo-owned collections). -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline' https://web3forms.com https://js.hcaptcha.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://*.hcaptcha.com; connect-src 'self' https://api.web3forms.com https://hcaptcha.com https://*.hcaptcha.com; frame-src https://hcaptcha.com https://*.hcaptcha.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com"
+    />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
