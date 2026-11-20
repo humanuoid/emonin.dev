@@ -5,8 +5,9 @@ import { defineConfig } from 'astro/config';
 export default defineConfig({
   site: 'https://emonin.dev',
   server: {
-    // Listen on all network interfaces so the OpenChamber browser panel can reach the dev server
-    host: true,
+    // Bind to localhost only by default. Pass --host on the CLI when the
+    // browser panel needs to reach the dev server from another device:
+    // npm run dev -- --host
     port: 4321,
   },
 });
